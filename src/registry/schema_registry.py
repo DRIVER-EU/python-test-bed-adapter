@@ -25,7 +25,6 @@ class SchemaRegistry(SchemaAccess):
         if self.schema_available:
             self.fetch_all_schema_topics()
 
-            fetch_schema_tasks =[]
             for topic in self.topics:
                 self.fetch_schema(topic)
 

@@ -20,13 +20,11 @@ class SchemaRegistryTest(unittest.TestCase):
         schema_registry = SchemaRegistry(test_bed_configuration)
         schema_registry.start_process()
 
-
-        logging.info("----------------------------------------------------------------------------\n\n")
+        logging.info("\n\n---------------------\n\n")
         logging.info(schema_registry.keys_schema)
         logging.info(schema_registry.values_schema)
         self.assertGreater(len(schema_registry.keys_schema), 0)
         self.assertGreater(len(schema_registry.values_schema), 0)
-
 
 if __name__ == '__main__':
     unittest.main()

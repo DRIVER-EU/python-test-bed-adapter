@@ -3,6 +3,6 @@
   "kafka_host": "localhost:3501",
   "schema_registry": "http://localhost:3502",
   "fetch_all_versions": false,
-  "client_id": "ConsumerGMV",
+  "client_id": "PYTHON TEST BED ADAPTER",
   "consume": ["standard_cap","standard_xvr_geojson"]
 }

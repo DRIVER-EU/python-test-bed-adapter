@@ -18,7 +18,7 @@ class KafkaManager():
         if handler:
             self.emisor_handler += handler
 
-        self.client = KafkaClient(hosts=self.kafka_host,exclude_internal_topics=self.from_off_set)
+        self.client = KafkaClient(hosts=self.kafka_host, exclude_internal_topics=self.from_off_set)
         self.client_topic = self.client.topics[kafka_topic]
 
 
@@ -58,5 +58,7 @@ class KafkaManager():
                 producer.produce(encoded_message, encoded_key)
                 #We fire the handler to signify that the message was sent OK
                 self.emisor_handler.fire(json_message)
+                producer.stop()
+
 
 

@@ -9,7 +9,7 @@ from avro_schema_helper import AvroSchemaHelper
 import logging
 logging.basicConfig(level=logging.INFO)
 
-class MyTestCase(unittest.TestCase):
+class TestConsumerWithSchemas(unittest.TestCase):
     @unittest.skip("This test can use an outdated version of your schema")
     def test_something(self):
         options ={
@@ -20,7 +20,7 @@ class MyTestCase(unittest.TestCase):
           "schema_registry": 'http://localhost:3502',
           "fetch_all_versions": False,
           "from_off_set": True,
-          "client_id": 'ConsumerErik',
+          "client_id": 'PYTHON TEST BED ADAPTER',
           "consume": None}
 
         test_bed_options = TestBedOptions(options)

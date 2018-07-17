@@ -8,11 +8,12 @@ from test_bed_adapter import TestBedAdapter
 import logging
 logging.basicConfig(level=logging.INFO)
 
-class MyTestCase(unittest.TestCase):
+class TestConsumerWithAdapter(unittest.TestCase):
+    @unittest.skip("Skip this test if you are going to run many tests, because this could block the stack")
     def test_consumer_using_adapter(self):
         self.was_any_message_obtained = False
 
-        options_file = open("test_bed_options_for_tests_consumer.json",encoding="utf8")
+        options_file = open("test_bed_options_for_tests_consumer.json", encoding="utf8")
         options = json.loads(options_file.read())
         options_file.close()
 
@@ -21,7 +22,6 @@ class MyTestCase(unittest.TestCase):
 
         # We add the message handler
         test_bed_adapter.on_message += self.handle_message
-
 
         test_bed_adapter.initialize()
         topic=list(test_bed_adapter.kafka_managers.keys())[0]

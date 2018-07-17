@@ -8,7 +8,7 @@ logging.basicConfig(level=logging.INFO)
 class SchemaPublisherTest(unittest.TestCase):
 
     def test_schema_registry(self):
-        options_file = open("test_bed_options_for_tests_consumer.json", encoding="utf8")
+        options_file = open("test_bed_options_for_tests_producer.json", encoding="utf8")
         options = json.loads(options_file.read())
         options_file.close()
 
@@ -22,8 +22,6 @@ class SchemaPublisherTest(unittest.TestCase):
             error_obtained=True
 
         self.assertIs(error_obtained, False)
-
-
 
 if __name__ == '__main__':
     unittest.main()
