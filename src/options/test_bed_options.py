@@ -2,7 +2,7 @@ class TestBedOptions:
     def __init__(self, dictionary):
         # clientId, kafkaHost, schemaRegistry)
         # Unique ID of this client
-        self.clientId = None
+        self.client_id = None
 
         # Uri for the Kafka broker, e.g. broker:3501
         self.kafka_host = None
@@ -30,6 +30,9 @@ class TestBedOptions:
 
         # How often should the adapter try to reconnect to the kafka server if the first time fails
         self.reconnection_retries = 5
+
+        # Interval between two heartbeat messages in secs
+        self.heartbeat_interval = 5
 
         # Topics you want to consume
         self.consume = []

@@ -16,7 +16,7 @@ class ConsumerExample:
            "fetch_all_versions": False,
            "from_off_set": True,
            "client_id": 'PYTHON TEST BED ADAPTER',
-           "consume": ["standard_cap"]}
+           "consume": ["system_heartbeat"]}
 
         test_bed_options = TestBedOptions(options)
         test_bed_adapter = TestBedAdapter(test_bed_options)
@@ -29,7 +29,7 @@ class ConsumerExample:
 
         # We initialize the process (catching schemas and so on) and we listen the messages from the topic standard_cap
         test_bed_adapter.initialize()
-        test_bed_adapter.kafka_managers["standard_cap"].listen_messages()
+        test_bed_adapter.kafka_managers["system_heartbeat"].listen_messages()
 
 
 if __name__ == '__main__':

@@ -5,18 +5,22 @@ import logging
 import uuid
 
 class KafkaManager():
-    def __init__(self, kafka_topic, kafka_host, from_off_set, client_id, avro_helper_key, avro_helper_value, handler):
+    def __init__(self, kafka_topic, kafka_host, from_off_set, client_id, avro_helper_key, avro_helper_value, succesfully_sent_message, handle_message):
         self.topic = kafka_topic
         #The emisor handler will be fired if a message is ether sent or listened
-        self.emisor_handler = EventHook()
+        self.on_message = EventHook()
+        self.on_sent = EventHook()
         self.avro_helper_key = avro_helper_key
         self.avro_helper_value = avro_helper_value
         self.from_off_set = from_off_set
         self.kafka_host = kafka_host
         self.client_id = client_id
+        self.heartbeat_topic = "system_heartbeat"
 
-        if handler:
-            self.emisor_handler += handler
+        if handle_message:
+            self.on_message += handle_message
+        if succesfully_sent_message:
+            self.on_sent += succesfully_sent_message
 
         self.client = KafkaClient(hosts=self.kafka_host, exclude_internal_topics=self.from_off_set)
         self.client_topic = self.client.topics[kafka_topic]
@@ -35,7 +39,7 @@ class KafkaManager():
                     decoded_value = self.avro_helper_value.avro_decode_message(message.value)
                 decoded_message = {"decoded_key" : decoded_key, "decoded_value" : decoded_value}
                 # We fire the handler to pass the decoded message
-                self.emisor_handler.fire(decoded_message)
+                self.on_message.fire(decoded_message)
 
     def send_messages(self,json_message):
         if ("messages" in list(json_message.keys())):
@@ -57,7 +61,10 @@ class KafkaManager():
             with self.client_topic.get_sync_producer() as producer:
                 producer.produce(encoded_message, encoded_key)
                 #We fire the handler to signify that the message was sent OK
-                self.emisor_handler.fire(json_message)
+                try:
+                    self.on_sent.fire(json_message)
+                except:
+                    pass
                 producer.stop()
 
 

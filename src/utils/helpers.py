@@ -4,6 +4,7 @@ from functools import reduce
 import collections
 import os
 import pathlib
+import threading
 
 
 def scantree_recursive(path):
@@ -16,6 +17,7 @@ def scantree_recursive(path):
 
 class Helpers:
     def __init__(self):
+        self.thread_set_interval=None
         pass
 
     #directory should be a relative path to the api root folder
@@ -34,7 +36,7 @@ class Helpers:
         return files_schema
 
 
-
+    #Gives the missing key files from the list of files.
     def missing_key_files(files:list):
         value_schema_files = list(filter (lambda filename:"-value.avsc" in filename, files))
         result = []
@@ -43,3 +45,16 @@ class Helpers:
             if not (key_schema in files):
                 result.append(key_schema)
         return result
+
+    #This functions executes the function function_handler periodically each number of seconds given by sec
+    #imitates the functionallity of the nodejs funciton setInterval
+    def set_interval(self, function_handler, sec):
+        def func_wrapper():
+            self.set_interval(function_handler, sec)
+            function_handler()
+
+        self.thread_set_interval = threading.Timer(sec, func_wrapper)
+        self.thread_set_interval.start()
+
+    def stop_set_interval_thread(self):
+        self.thread_set_interval.cancel()
