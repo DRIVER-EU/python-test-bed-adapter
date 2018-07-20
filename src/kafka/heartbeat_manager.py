@@ -26,7 +26,6 @@ class HeartbeatManager():
 
         message_json = {"id":self.client_id, "alive": date_ms}
         message = {"messages": message_json}
-        logging.info("sending " + str(message))
         self.kafka_heartbeat_producer.send_messages(message)
 
     def stop(self):
