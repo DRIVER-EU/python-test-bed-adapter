@@ -58,7 +58,7 @@ class TestConsumerWithAdapter(unittest.TestCase):
                 time.sleep(1)
             else:
                 break
-
+        test_bed_adapter.heartbeat_manager.stop()
 
 if __name__ == '__main__':
     unittest.main()

@@ -32,7 +32,7 @@ class TestBedOptions:
         self.reconnection_retries = 5
 
         # Interval between two heartbeat messages in secs
-        self.heartbeat_interval = 5
+        self.heartbeat_interval = 1
 
         # Topics you want to consume
         self.consume = []
