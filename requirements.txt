@@ -1,2 +1,3 @@
 pykafka
 avro-python3
+requests
