@@ -9,7 +9,7 @@ The implementation is a wrapper around [Pykafka](https://github.com/Parsely/pyka
 and [avro-python3](https://avro.apache.org/docs/1.8.2/gettingstartedpython.html) 
 offering support for:
 - AVRO schema's and messages: both key's and values should have a schema 
-as explained [here](https:/github.com/DRIVER-EU/avro-schemas).
+as explained [here](https://github.com/DRIVER-EU/avro-schemas).
 - Kafka consumer and producer for the test-bed topics.
 - Management
   - Heartbeat (topic: connect-status-heartbeat), so you know which clients are online.
