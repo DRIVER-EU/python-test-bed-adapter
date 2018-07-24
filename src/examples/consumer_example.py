@@ -1,5 +1,6 @@
 import logging
 logging.basicConfig(level=logging.INFO)
+import time
 import sys
 sys.path.append("..")
 from test_bed_options import TestBedOptions
@@ -29,7 +30,8 @@ class ConsumerExample:
 
         # We initialize the process (catching schemas and so on) and we listen the messages from the topic standard_cap
         test_bed_adapter.initialize()
-        test_bed_adapter.kafka_managers["standard_cap"].listen_messages()
+        test_bed_adapter.consumer_managers["standard_cap"].listen_messages()
+
 
 
 if __name__ == '__main__':

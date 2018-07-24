@@ -11,7 +11,7 @@ logging.basicConfig(level=logging.INFO)
 
 class TestProducerWithAdapter(unittest.TestCase):
     def test_producer_using_adapter(self):
-        self.was_any_message_obtained = False
+        self.message_was_sent = False
 
         options_file = open("test_bed_options_for_tests_producer.json",encoding="utf8")
         options = json.loads(options_file.read())
@@ -27,14 +27,15 @@ class TestProducerWithAdapter(unittest.TestCase):
         test_bed_adapter = TestBedAdapter(test_bed_options)
         test_bed_adapter.on_sent += self.message_sent_handler
         test_bed_adapter.initialize()
-        test_bed_adapter.kafka_managers["standard_cap"].send_messages(message)
+        test_bed_adapter.producer_managers["standard_cap"].send_messages(message)
 
         #test_bed_adapter.consumers["simulation-entity-item"].listen_messages()
 
         self.assertTrue(self.message_was_sent)
+        test_bed_adapter.stop()
 
     def message_sent_handler(self,json_message):
-        logging.info("message sent\n\n")
+        logging.info("\n\nmessage sent\n\n")
         logging.info(json_message)
         self.message_was_sent = True
 

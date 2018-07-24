@@ -42,7 +42,7 @@ class ProducerExample:
         test_bed_adapter.on_sent += message_sent_handler
 
         test_bed_adapter.initialize()
-        test_bed_adapter.kafka_managers["standard_cap"].send_messages(message)
+        test_bed_adapter.producer_managers["standard_cap"].send_messages(message)
 
 if __name__ == '__main__':
     ProducerExample().main()

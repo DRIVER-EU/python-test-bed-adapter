@@ -21,13 +21,14 @@ class TestConsumerWithAdapter(unittest.TestCase):
         test_bed_adapter = TestBedAdapter(test_bed_options)
 
         # We add the message handler
-        test_bed_adapter.on_message += self.handle_message
+        test_bed_adapter.on_sent += self.handle_message
 
         test_bed_adapter.initialize()
-        topic=list(test_bed_adapter.kafka_managers.keys())[0]
-        test_bed_adapter.kafka_managers[topic].listen_messages()
+        topic=list(test_bed_adapter.consumer_managers.keys())[0]
+        test_bed_adapter.consumer_managers[topic].listen_messages()
 
         self.assertEqual(True, True)
+        test_bed_adapter.stop()
 
     def handle_message(self,message):
         logging.info("-------")

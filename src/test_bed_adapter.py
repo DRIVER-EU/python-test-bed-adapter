@@ -1,10 +1,12 @@
 from event_hook import EventHook
 from test_bed_options import TestBedOptions
-from kafka_manager import KafkaManager
+from consumer_manager import ConsumerManager
+from producer_manager import ProducerManager
 from registry.schema_registry import SchemaRegistry
 from schema_publisher import SchemaPublisher
 from heartbeat_manager import HeartbeatManager
 import logging
+
 
 class TestBedAdapter:
     def __init__(self, test_bed_options: TestBedOptions):
@@ -14,7 +16,9 @@ class TestBedAdapter:
         self.schema_publisher = SchemaPublisher(test_bed_options)
         self.heartbeat_topic = "system_heartbeat"
         self.heartbeat_interval = test_bed_options.heartbeat_interval
-        self.kafka_managers = {}
+        self.consumer_managers = {}
+        self.producer_managers = {}
+        self.connected = False
 
         # We set up the handlers for the events
         self.on_ready = EventHook()
@@ -26,43 +30,62 @@ class TestBedAdapter:
         logging.info("Initializing test bed")
         self.schema_registry.start_process()
         self.schema_publisher.start_process()
-        self.init_consumers_and_producers()
-        self.init_heartbeat()
+        self.init_consumers()
+        self.init_producers()
+        self.init_and_start_heartbeat()
+        self.connected = True
 
         # We emit here by firing the on ready observable.
         self.on_ready.fire()
 
-    def init_consumers_and_producers(self):
-        logging.info("Initializing kafka producer helpers")
-        topics_to_consume_and_produce = list(set((self.test_bed_options.produce + self.test_bed_options.consume)))
-        if self.heartbeat_topic not in topics_to_consume_and_produce:
-            topics_to_consume_and_produce.append(self.heartbeat_topic)
-        self.init_kafka_managers(topics_to_consume_and_produce)
-        logging.info("Initialized " + str(len(topics_to_consume_and_produce)) + " producers")
-
-    def init_heartbeat(self):
-        heartbeat_manager = HeartbeatManager(self.kafka_managers[self.heartbeat_topic], self.heartbeat_interval, self.test_bed_options.client_id)
-        heartbeat_manager.start_heartbeat_async()
-
-    # The last input is the function handler that will be called once a message is recieved or sent
-    def init_kafka_managers(self, topics):
-        for topic_name in topics:
-            logging.info("Initializing Kafka manager for topic " + topic_name)
+    def init_consumers(self):
+        for topic_name in self.test_bed_options.consume:
             if (topic_name in list(self.schema_registry.values_schema.keys())):
                 avro_helper_key = self.schema_registry.keys_schema[topic_name]["avro_helper"]
                 avro_helper_value = self.schema_registry.values_schema[topic_name]["avro_helper"]
 
-                # We create a new manager for this topic. The last input is the callback where we handle the message recieved and decoded from kafka.
-                manager = KafkaManager(bytes(topic_name, 'utf-8'), self.test_bed_options.kafka_host,
-                                       self.test_bed_options.from_off_set,
-                                       self.test_bed_options.client_id, avro_helper_key, avro_helper_value,
-                                       self.succesfully_sent_message,
-                                       self.handle_message)
-                self.kafka_managers[topic_name] = manager
+                # We create a new consumer for this topic. The last input is the callback where we handle the message recieved and decoded from kafka.
+                manager = ConsumerManager(bytes(topic_name, 'utf-8'), self.test_bed_options.kafka_host,
+                                          self.test_bed_options.from_off_set,
+                                          avro_helper_key, avro_helper_value,
+                                          self.handle_message)
+                self.consumer_managers[topic_name] = manager
+                logging.info("Initialized kafka consumer manager for topic" + topic_name)
             else:
                 logging.error("No schema found for topic " + topic_name)
 
+    def init_producers(self):
+        if self.heartbeat_topic not in self.test_bed_options.produce:
+            self.test_bed_options.produce.append(self.heartbeat_topic)
 
+        for topic_name in self.test_bed_options.produce:
+            if (topic_name in list(self.schema_registry.values_schema.keys())):
+                avro_helper_key = self.schema_registry.keys_schema[topic_name]["avro_helper"]
+                avro_helper_value = self.schema_registry.values_schema[topic_name]["avro_helper"]
+
+                # We create a new producer for this topic. The last input is the callback where we handle the message sent.
+                manager = ProducerManager(bytes(topic_name, 'utf-8'), self.test_bed_options.kafka_host,
+                                          self.test_bed_options.from_off_set,
+                                          self.test_bed_options.client_id,
+                                          avro_helper_key, avro_helper_value,
+                                          self.succesfully_sent_message)
+                self.producer_managers[topic_name] = manager
+                logging.info("Initialized kafka producer manager for topic" + topic_name)
+            else:
+                logging.error("No schema found for topic " + topic_name)
+
+    def init_and_start_heartbeat(self):
+        self.heartbeat_manager = HeartbeatManager(self.producer_managers[self.heartbeat_topic], self.heartbeat_interval,
+                                                  self.test_bed_options.client_id)
+        self.heartbeat_manager.start_heartbeat_async()
+
+    def stop(self):
+        # We stop the heatbeat thread
+        self.heartbeat_manager.stop()
+        # We stop all the kafka listeners
+        for manager in list(self.consumer_managers.values()):
+            manager.stop()
+        self.connected = False
 
     def handle_message(self, message):
         # We emit the message recieved

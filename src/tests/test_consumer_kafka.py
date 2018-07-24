@@ -3,7 +3,7 @@ import sys
 sys.path.append("..")
 
 from test_bed_options import TestBedOptions
-from kafka_manager import KafkaManager
+from consumer_manager import ConsumerManager
 from avro_schema_helper import AvroSchemaHelper
 
 import logging
@@ -39,7 +39,7 @@ class TestConsumerWithSchemas(unittest.TestCase):
 
         on_message_handler = lambda x: logging.info(x)
 
-        consumer_kafka = KafkaManager(topic, test_bed_options.kafka_host, test_bed_options.from_off_set, client_id,
+        consumer_kafka = ConsumerManager(topic, test_bed_options.kafka_host, test_bed_options.from_off_set,
                                       avro_helper_key,
                                       avro_helper_value, on_message_handler)
 

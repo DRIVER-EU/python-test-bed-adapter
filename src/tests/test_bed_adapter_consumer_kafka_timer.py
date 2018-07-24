@@ -29,7 +29,7 @@ class TestConsumerWithAdapter(unittest.TestCase):
         t.start()
 
         # wait 30 seconds for the thread to finish its work
-        t.join(5)
+        t.join(self.wait_seconds)
         if t.is_alive():
             print
             "thread is not done, setting event to kill thread."
@@ -39,17 +39,18 @@ class TestConsumerWithAdapter(unittest.TestCase):
             "thread has already finished."
 
         self.assertTrue(self.was_any_message_obtained)
+        test_bed_adapter.stop()
         pass
 
     def handle_message(self,message):
-        logging.info("-------")
+        logging.info("\n\n-------\n\n")
         self.was_any_message_obtained=True
         logging.info(message)
 
     def run_consumer_in_thread(self, e, test_bed_adapter):
         data = set()
         test_bed_adapter.initialize()
-        test_bed_adapter.kafka_managers["standard_cap"].listen_messages()
+        test_bed_adapter.consumer_managers["standard_cap"].listen_messages()
         # test_bed_adapter.consumers["simulation-entity-item"].listen_messages()
 
         for i in range(self.wait_seconds):
@@ -58,7 +59,6 @@ class TestConsumerWithAdapter(unittest.TestCase):
                 time.sleep(1)
             else:
                 break
-        test_bed_adapter.heartbeat_manager.stop()
 
 if __name__ == '__main__':
     unittest.main()

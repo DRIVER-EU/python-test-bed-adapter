@@ -6,14 +6,11 @@ import logging
 import json
 from test_bed_options import TestBedOptions
 from test_bed_adapter import TestBedAdapter
-
-from kafka_manager import KafkaManager
-from avro_schema_helper import AvroSchemaHelper
-
-
 from heartbeat_manager import HeartbeatManager
+
 sys.path.append("..")
 logging.basicConfig(level=logging.INFO)
+
 
 class TestHeartbeat(unittest.TestCase):
 
@@ -49,9 +46,9 @@ class TestHeartbeat(unittest.TestCase):
 
         test_bed_adapter = TestBedAdapter(test_bed_options)
         test_bed_adapter.schema_registry.start_process()
-        test_bed_adapter.init_consumers_and_producers()
-        kafka_heartbeat_producer = test_bed_adapter.kafka_managers[heartbeat_topic]
-        kafka_heartbeat_producer.emisor_handler = self.message_sent_handler
+        test_bed_adapter.init_producers()
+        kafka_heartbeat_producer = test_bed_adapter.producer_managers[heartbeat_topic]
+        kafka_heartbeat_producer.on_sent += self.message_sent_handler
 
         heartbeat_manager = HeartbeatManager(kafka_heartbeat_producer, heartbeat_interval, test_bed_options.client_id)
         heartbeat_manager.start_heartbeat_async()
@@ -65,10 +62,12 @@ class TestHeartbeat(unittest.TestCase):
                 break
 
         heartbeat_manager.stop()
-    def message_sent_handler(self,json_message):
-        logging.info("message sent\n\n")
+
+    def message_sent_handler(self, json_message):
+        logging.info("heartbeat message sent\n\n")
         logging.info(json_message)
         self.message_was_sent = True
+
 
 if __name__ == '__main__':
     unittest.main()

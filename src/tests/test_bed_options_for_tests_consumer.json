@@ -4,5 +4,6 @@
   "schema_registry": "http://localhost:3502",
   "fetch_all_versions": false,
   "client_id": "PYTHON TEST BED ADAPTER",
+  "heartbeat_interval" : 0.1,
   "consume": ["standard_cap","standard_xvr_geojson"]
 }
