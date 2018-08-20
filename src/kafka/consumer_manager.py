@@ -5,8 +5,8 @@ import logging
 
 
 class ConsumerManager(KafkaManager):
-    def __init__(self, kafka_topic, kafka_host, from_off_set, avro_helper_key, avro_helper_value, handle_message):
-        super().__init__(kafka_topic, kafka_host, from_off_set, avro_helper_key, avro_helper_value)
+    def __init__(self, kafka_topic, kafka_host, from_off_set, avro_helper_key, avro_helper_value, handle_message, ssl_config):
+        super().__init__(kafka_topic, kafka_host, from_off_set, avro_helper_key, avro_helper_value, ssl_config)
 
         self.simple_consumer = None
 

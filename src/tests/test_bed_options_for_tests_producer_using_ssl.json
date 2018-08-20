@@ -1,0 +1,10 @@
+{
+  "auto_register_schemas":true,
+  "kafka_host": "localhost:3501",
+  "schema_registry": "http://localhost:3502",
+  "fetch_all_versions": false,
+  "client_id": "PYTHON TEST BED ADAPTER",
+  "produce": ["standard_cap"],
+  "use_ssl": true,
+  "ca_file": "certificates_for_testing\\test_self_signed_certificate_for_localhost_3501.cert"
+}

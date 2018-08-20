@@ -5,6 +5,7 @@ from producer_manager import ProducerManager
 from registry.schema_registry import SchemaRegistry
 from schema_publisher import SchemaPublisher
 from heartbeat_manager import HeartbeatManager
+from pykafka.connection import SslConfig
 import logging
 
 
@@ -19,6 +20,13 @@ class TestBedAdapter:
         self.consumer_managers = {}
         self.producer_managers = {}
         self.connected = False
+
+        # If we are using ssl we create the ssl config object
+        if self.test_bed_options.use_ssl:
+            self.ssl_config = SslConfig(self.test_bed_options.ca_file, self.test_bed_options.cert_file,
+                                        self.test_bed_options.key_file, self.test_bed_options.password_private_key)
+        else:
+            self.ssl_config = None
 
         # We set up the handlers for the events
         self.on_ready = EventHook()
@@ -48,7 +56,7 @@ class TestBedAdapter:
                 manager = ConsumerManager(bytes(topic_name, 'utf-8'), self.test_bed_options.kafka_host,
                                           self.test_bed_options.from_off_set,
                                           avro_helper_key, avro_helper_value,
-                                          self.handle_message)
+                                          self.handle_message, self.ssl_config)
                 self.consumer_managers[topic_name] = manager
                 logging.info("Initialized kafka consumer manager for topic" + topic_name)
             else:
@@ -68,7 +76,7 @@ class TestBedAdapter:
                                           self.test_bed_options.from_off_set,
                                           self.test_bed_options.client_id,
                                           avro_helper_key, avro_helper_value,
-                                          self.succesfully_sent_message)
+                                          self.succesfully_sent_message, self.ssl_config)
                 self.producer_managers[topic_name] = manager
                 logging.info("Initialized kafka producer manager for topic" + topic_name)
             else:

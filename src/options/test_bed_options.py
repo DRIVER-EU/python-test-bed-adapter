@@ -40,6 +40,22 @@ class TestBedOptions:
         # Topics you want to produce
         self.produce = []
 
+        # If set true, use SSL
+        self.use_ssl = False
+
+        # Path to trusted CA certificate. It will only be used if use_ssl is set true.
+        self.ca_file = ""
+
+        # Path to client certificate. It will only be used if use_ssl is set true.
+        self.cert_file: str = None
+
+        # Path to client private-key file. It will only be used if use_ssl is set true.
+        self.key_file: str = None
+
+        # Password for private key. It will only be used if use_ssl is set true.
+        self.password_private_key: str = None
+
+
         # Here we override the default values if they were introduced in the dictionary as an input of the constructor
         for key in dictionary:
             setattr(self, key, dictionary[key])

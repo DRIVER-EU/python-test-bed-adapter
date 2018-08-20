@@ -6,14 +6,15 @@ import logging
 import uuid
 
 class KafkaManager():
-    def __init__(self, kafka_topic, kafka_host, from_off_set, avro_helper_key, avro_helper_value):
+    def __init__(self, kafka_topic, kafka_host, from_off_set, avro_helper_key, avro_helper_value, ssl_config):
         self.topic = kafka_topic
         self.avro_helper_key = avro_helper_key
         self.avro_helper_value = avro_helper_value
         self.from_off_set = from_off_set
         self.kafka_host = kafka_host
+        self.ssl_config = ssl_config
 
         # we set up the Kafka client and kafka client topics to obtain consumers and producers from them in the classes
         # that will inherit from this
-        self.client = KafkaClient(hosts=self.kafka_host, exclude_internal_topics=self.from_off_set)
+        self.client = KafkaClient(hosts=self.kafka_host, exclude_internal_topics=self.from_off_set, ssl_config=self.ssl_config)
         self.client_topic = self.client.topics[kafka_topic]
