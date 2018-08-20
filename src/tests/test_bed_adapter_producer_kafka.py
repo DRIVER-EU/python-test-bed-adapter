@@ -33,8 +33,6 @@ class TestProducerWithAdapter(unittest.TestCase):
         test_bed_adapter.initialize()
         test_bed_adapter.producer_managers["standard_cap"].send_messages(message)
 
-        # test_bed_adapter.consumers["simulation-entity-item"].listen_messages()
-
         self.assertTrue(self.message_was_sent)
         test_bed_adapter.stop()
 
