@@ -2,7 +2,7 @@ import logging
 logging.basicConfig(level=logging.INFO)
 import time
 import sys
-sys.path.append("..")
+sys.path += ["..", "../options", "../utils", "../kafka", "../registry"]
 from test_bed_options import TestBedOptions
 from test_bed_adapter import TestBedAdapter
 
