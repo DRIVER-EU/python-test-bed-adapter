@@ -1,8 +1,10 @@
 {
-  "auto_register_schemas":false,
+  "auto_register_schemas":true,
   "kafka_host": "localhost:3501",
   "schema_registry": "http://localhost:3502",
   "fetch_all_versions": false,
-  "client_id": "ConsumerGMV",
+  "from_off_set": true,
+  "client_id": "PYTHON TEST BED ADAPTER",
+  "heartbeat_interval" : 0.1,
   "consume": ["standard_cap"]
 }

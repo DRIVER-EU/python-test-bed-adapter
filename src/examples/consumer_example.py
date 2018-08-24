@@ -5,19 +5,22 @@ import sys
 sys.path += ["..", "../options", "../utils", "../kafka", "../registry"]
 from test_bed_options import TestBedOptions
 from test_bed_adapter import TestBedAdapter
-
+import json
 class ConsumerExample:
     def main(self):
-        options = {
-           "auto_register_schemas": True,
-           # "kafka_host": 'driver-testbed.eu:3501',
-           # "schema_registry": 'http://driver-testbed.eu:3502',
-           "kafka_host": '127.0.0.1:3501',
-           "schema_registry": 'http://localhost:3502',
-           "fetch_all_versions": False,
-           "from_off_set": True,
-           "client_id": 'PYTHON TEST BED ADAPTER',
-           "consume": ["standard_cap"]}
+        options_file = open("test_bed_options_example.json", encoding="utf8")
+        options = json.loads(options_file.read())
+        options_file.close()
+
+        # If you prefer to use a dictionary for the options instead of a file:
+        #options = {
+        #   "auto_register_schemas": True,
+        #   "kafka_host": '127.0.0.1:3501',
+        #   "schema_registry": 'http://localhost:3502',
+        #   "fetch_all_versions": False,
+        #   "from_off_set": True,
+        #   "client_id": 'PYTHON TEST BED ADAPTER',
+        #   "consume": ["standard_cap"]}
 
         test_bed_options = TestBedOptions(options)
         test_bed_adapter = TestBedAdapter(test_bed_options)
