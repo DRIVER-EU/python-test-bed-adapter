@@ -1,5 +1,5 @@
 {
-  "auto_register_schemas":false,
+  "auto_register_schemas":true,
   "kafka_host": "localhost:3501",
   "schema_registry": "http://localhost:3502",
   "fetch_all_versions": false,

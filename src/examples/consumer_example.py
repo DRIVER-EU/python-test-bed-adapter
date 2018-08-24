@@ -9,7 +9,7 @@ from test_bed_adapter import TestBedAdapter
 class ConsumerExample:
     def main(self):
         options = {
-           "auto_register_schemas": False,
+           "auto_register_schemas": True,
            # "kafka_host": 'driver-testbed.eu:3501',
            # "schema_registry": 'http://driver-testbed.eu:3502',
            "kafka_host": '127.0.0.1:3501',
