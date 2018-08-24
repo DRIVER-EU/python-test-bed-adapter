@@ -1,8 +1,8 @@
 import unittest
 import sys
-sys.path.append("..")
 import json
 import os
+sys.path += ["..", "../options", "../utils", "../kafka", "../registry"]
 from test_bed_options import TestBedOptions
 from test_bed_adapter import TestBedAdapter
 
@@ -28,7 +28,7 @@ class ProducerExample:
 
 
         #We load a test message from file
-        message_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),"sample_messages\\example_amber_alert.json")
+        message_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),"sample_messages", "example_amber_alert.json")
         example_message_file = open(message_path, encoding="utf-8")
         message_json = json.loads(example_message_file.read())
         example_message_file.close()
