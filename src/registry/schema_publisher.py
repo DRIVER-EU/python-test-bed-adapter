@@ -41,13 +41,16 @@ class SchemaPublisher(SchemaAccess):
             schema = json.loads(schema_file.read())
             schema_file.close()
 
-        data = {"schema":schema}
+        data = {"schema": json.dumps(schema)}
         headers = {"Content-type": "application/vnd.schemaregistry.v1+json"}
         try:
-            requests.post(url=upload_url, data=data, headers=headers)
+            response = requests.post(url=upload_url, json=data, headers=headers)
             message = "Uploaded schema " + schema_topic + " to " + upload_url + " with default key schema " if use_default_schema else "Uploaded schema " + schema_topic + " to " + upload_url
+            message = message + ". Response from server: " + response.text
+            if (response.status_code != 200): raise Exception(response.text)
             logging.info(message)
-        except:
+        except Exception as error:
             logging.error("Error uploading schema " + schema_topic + " to " + upload_url)
+            logging.error(error)
 
 
