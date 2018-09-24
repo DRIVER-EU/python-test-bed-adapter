@@ -1,0 +1,50 @@
+{
+  "name": "AffectedTraffic",
+  "namespace": "eu.driver.model.sumo",
+  "type": "record",
+  "doc": "Information about the affected traffic",
+  "fields": [
+    {
+      "name": "begin",
+      "type": "int",
+      "doc": "Begin time of the affected interval in milliseconds"
+    },
+    {
+      "name": "end",
+      "type": "int",
+      "doc": "End time of the affected interval in milliseconds"
+    },
+    {
+      "name": "areaData",
+      "doc": "list of aggregated data items for each area in the interval",
+      "type": {
+          "type": "array",
+          "items": {
+            "type": "record",
+            "fields": [
+              {
+                "name": "id",
+                "type": "string",
+                "doc": "Area ID"
+              },
+              {
+                "name": "reroute",
+                "type": { "type": "map", "values": "int"},
+                "doc": "Number of rerouted vehicles / people, classified by vehicle / person type"
+              },
+              {
+                "name": "canNotReach",
+                "type": { "type": "map", "values": "int"},
+                "doc": "Number of vehicles / people, which cannot reach their destinations, classified by vehicle / person type"
+              },
+              {
+                "name": "averageContained",
+                "type": { "type": "map", "values": "int"},
+                "doc": "Average number of vehicles / people, which are in the area, classified by vehicle / person type"
+              }
+            ]
+          }
+        }
+    }
+  ]
+}

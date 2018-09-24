@@ -1,0 +1,20 @@
+{
+  "name": "UpdateConfiguration",
+  "namespace": "eu.driver.model.sumo",
+  "type": "record",
+  "doc": "Update configuration message, contains updated simulation settings (sent to SUMO)",
+  "fields": [
+    {
+      "name": "singleVehicle",
+      "type": "int",
+      "default": -1,
+      "doc": "Aggregation period for the outputs of each vehicle in milliseconds (default is -1, which means do not collect individual data)"
+    },
+    {
+      "name": "affectedTraffic",
+      "type": "int",
+      "default": 300000,
+      "doc": "Aggregation period for the statistics about affected traffic in milliseconds"
+    }
+  ]
+}

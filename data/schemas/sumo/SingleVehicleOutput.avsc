@@ -1,0 +1,55 @@
+{
+  "name": "SumoSingleVehicleOutput",
+  "namespace": "eu.driver.model.sumo",
+  "type": "record",
+  "doc": "Output of each single vehicle's traffic state (sent from SUMO) for visualization purposes",
+  "fields": [
+    {
+      "name": "timeStep",
+      "type": "int",
+      "doc": "Time step in seconds"
+    },
+    {
+      "name": "vehicleData",
+      "type": {
+          "type": "array",
+          "items": {
+            "type": "record",
+            "fields": [
+              {
+                "name": "id",
+                "type": "string",
+                "doc": "Vehicle ID"
+              },
+              {
+                "name": "lon",
+                "type": "float",
+                "doc": "Vehicle's longitude position (WGS84)"
+              },
+              {
+                "name": "lat",
+                "type": "float",
+                "doc": "Vehicle's latitude position (WGS84)"
+              },
+              {
+                "name": "z",
+                "type": "float",
+                "default": 0.0,
+                "doc": "Vehicle's elevation in meters"
+              },
+              {
+                "name": "angle",
+                "type": "float",
+                "doc": "Vehicle's angle in navigational degrees (0 is north, clockwise)"
+              },
+              {
+                "name": "speed",
+                "type": "float",
+                "doc": "Vehicle's speed in meters per second"
+              }
+            ]
+          }
+        }
+    }
+  ]
+}

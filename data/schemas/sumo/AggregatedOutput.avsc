@@ -1,0 +1,60 @@
+{
+  "name": "SumoAggregatedOutput",
+  "namespace": "eu.driver.model.sumo",
+  "type": "record",
+  "doc": "Output of the aggregated traffic state (sent from SUMO)",
+  "fields": [
+    {
+      "name": "begin",
+      "type": "int",
+      "doc": "Begin time of the interval in milliseconds"
+    },
+    {
+      "name": "end",
+      "type": "int",
+      "doc": "End time of the interval in milliseconds"
+    },
+    {
+      "name": "edgeData",
+      "doc": "list of aggregated data items for each edge in the interval",
+      "type": {
+          "type": "array",
+          "items": {
+            "type": "record",
+            "fields": [
+              {
+                "name": "id",
+                "type": "string",
+                "doc": "Edge ID"
+              },
+              {
+                "name": "travelTime",
+                "type": "float",
+                "doc": "Time needed to pass the edge (an estimation based on the mean speed)"
+              },
+              {
+                "name": "density",
+                "type": "float",
+                "doc": "Vehicle density on the edge (in vehicles per km)"
+              },
+              {
+                "name": "occupancy",
+                "type": "float",
+                "doc": "Occupancy of the edge (ratio of occupied space to total space, between 0 and 1)"
+              },
+              {
+                "name": "waitingTime",
+                "type": "float",
+                "doc": "The total number of seconds vehicles were considered stopped"
+              },
+              {
+                "name": "speed",
+                "type": "float",
+                "doc": "The mean speed on the edge over the time in meters per second"
+              }
+            ]
+          }
+        }
+    }
+  ]
+}

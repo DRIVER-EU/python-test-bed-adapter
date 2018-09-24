@@ -1,0 +1,8 @@
+{
+    "configFile": "DenHaag/testing.sumocfg",
+    "begin": 3600000,
+    "end": 7200000,
+    "aggregation": 3600000,
+    "singleVehicle": 3600000,
+    "affectedTraffic": 3600000
+}
