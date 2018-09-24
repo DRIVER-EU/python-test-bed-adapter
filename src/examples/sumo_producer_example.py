@@ -14,7 +14,7 @@ class ProducerExample:
     def main(self):
         options = {
             "auto_register_schemas": True,
-            "schema_folder": 'sumo_schemas',
+            "schema_folder": 'data/schemas',
             # "kafka_host": 'driver-testbed.eu:3501',
             # "schema_registry": 'http://driver-testbed.eu:3502',
             "kafka_host": '127.0.0.1:3501',
