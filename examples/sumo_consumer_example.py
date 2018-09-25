@@ -32,8 +32,8 @@ class ConsumerExample:
 
         # We initialize the process (catching schemas and so on) and we listen the messages from the topic standard_cap
         test_bed_adapter.initialize()
-        test_bed_adapter.consumer_managers["sumo_SumoConfiguration"].listen_messages()
-#        test_bed_adapter.consumer_managers["system_heartbeat"].listen_messages()
+#        test_bed_adapter.consumer_managers["sumo_SumoConfiguration"].listen_messages()
+        test_bed_adapter.consumer_managers["system_timing"].listen_messages()
 
 
 
