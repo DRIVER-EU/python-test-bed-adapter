@@ -1,7 +1,7 @@
 import logging
 import requests
-from avro_schema_helper import AvroSchemaHelper
-from registry.schema_access import SchemaAccess
+from ..utils.avro_schema_helper import AvroSchemaHelper
+from .schema_access import SchemaAccess
 
 
 class SchemaRegistry(SchemaAccess):

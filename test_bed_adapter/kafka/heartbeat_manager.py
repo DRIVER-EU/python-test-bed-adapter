@@ -1,5 +1,5 @@
-from producer_manager import ProducerManager
-from utils.helpers import Helpers
+from .producer_manager import ProducerManager
+from ..utils.helpers import Helpers
 import datetime
 import time
 

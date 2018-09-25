@@ -1,4 +1,4 @@
-from event_hook import EventHook
+from ..utils.event_hook import EventHook
 from pykafka import KafkaClient
 from pykafka.exceptions import ConsumerStoppedException
 import datetime, time

@@ -1,5 +1,5 @@
-from event_hook import EventHook
-from kafka_manager import KafkaManager
+from ..utils.event_hook import EventHook
+from .kafka_manager import KafkaManager
 from pykafka.exceptions import ConsumerStoppedException
 import logging
 

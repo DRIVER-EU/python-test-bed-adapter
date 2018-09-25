@@ -3,8 +3,8 @@ import logging
 import requests
 import json
 import os
-from registry.schema_access import SchemaAccess
-from utils.helpers import Helpers
+from .schema_access import SchemaAccess
+from ..utils.helpers import Helpers
 
 
 class SchemaPublisher(SchemaAccess):

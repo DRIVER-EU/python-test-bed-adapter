@@ -1,10 +1,11 @@
-from event_hook import EventHook
-from test_bed_options import TestBedOptions
-from consumer_manager import ConsumerManager
-from producer_manager import ProducerManager
-from registry.schema_registry import SchemaRegistry
-from schema_publisher import SchemaPublisher
-from heartbeat_manager import HeartbeatManager
+from . import kafka, options, registry, utils
+from .utils.event_hook import EventHook
+from .options.test_bed_options import TestBedOptions
+from .kafka.consumer_manager import ConsumerManager
+from .kafka.producer_manager import ProducerManager
+from .registry.schema_registry import SchemaRegistry
+from .registry.schema_publisher import SchemaPublisher
+from .kafka.heartbeat_manager import HeartbeatManager
 from pykafka.connection import SslConfig
 import logging
 
