@@ -1,8 +1,8 @@
 import unittest
 import json
-sys.path.append("..")
+
 from test_bed_adapter.options.test_bed_options import TestBedOptions
-from registry.schema_publisher import SchemaPublisher
+from test_bed_adapter.registry.schema_publisher import SchemaPublisher
 import logging
 logging.basicConfig(level=logging.INFO)
 
