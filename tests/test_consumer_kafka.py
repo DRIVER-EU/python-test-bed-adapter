@@ -2,7 +2,7 @@ import unittest
 import sys
 sys.path.append("..")
 
-from test_bed_options import TestBedOptions
+from test_bed_adapter.options.test_bed_options import TestBedOptions
 from consumer_manager import ConsumerManager
 from avro_schema_helper import AvroSchemaHelper
 

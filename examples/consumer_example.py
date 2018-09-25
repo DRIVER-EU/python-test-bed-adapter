@@ -1,11 +1,13 @@
-import logging
-logging.basicConfig(level=logging.INFO)
 import time
 import sys
-sys.path += ["..", "../options", "../utils", "../kafka", "../registry"]
-from test_bed_options import TestBedOptions
-from test_bed_adapter import TestBedAdapter
 import json
+import logging
+logging.basicConfig(level=logging.INFO)
+sys.path += [".."]
+from test_bed_adapter.options.test_bed_options import TestBedOptions
+from test_bed_adapter import TestBedAdapter
+
+
 class ConsumerExample:
     def main(self):
         options_file = open("test_bed_options_example.json", encoding="utf8")

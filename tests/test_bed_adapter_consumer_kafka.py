@@ -1,8 +1,8 @@
 import unittest
 import sys
-sys.path.append("..")
 import json
-from test_bed_options import TestBedOptions
+sys.path.append("..")
+from test_bed_adapter.options.test_bed_options import TestBedOptions
 from test_bed_adapter import TestBedAdapter
 
 import logging

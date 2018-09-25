@@ -4,11 +4,11 @@ import threading
 import time
 import logging
 import json
-from test_bed_options import TestBedOptions
-from test_bed_adapter import TestBedAdapter
-from heartbeat_manager import HeartbeatManager
-
 sys.path.append("..")
+from test_bed_adapter.options.test_bed_options import TestBedOptions
+from test_bed_adapter import TestBedAdapter
+from test_bed_adapter.kafka.heartbeat_manager import HeartbeatManager
+
 logging.basicConfig(level=logging.INFO)
 
 

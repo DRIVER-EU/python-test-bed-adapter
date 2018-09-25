@@ -1,11 +1,11 @@
 import unittest
 import sys
 import json
-from registry.schema_registry import SchemaRegistry
-from test_bed_options import TestBedOptions
+sys.path.append("..")
+from test_bed_adapter.registry.schema_registry import SchemaRegistry
+from test_bed_adapter.options.test_bed_options import TestBedOptions
 import logging
 logging.basicConfig(level=logging.INFO)
-sys.path.append("..")
 
 
 class SchemaRegistryTest(unittest.TestCase):

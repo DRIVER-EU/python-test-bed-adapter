@@ -2,12 +2,12 @@ import unittest
 import sys
 import json
 import os
-sys.path += ["..", "../options", "../utils", "../kafka", "../registry"]
-from test_bed_options import TestBedOptions
-from test_bed_adapter import TestBedAdapter
-
 import logging
 logging.basicConfig(level=logging.INFO)
+sys.path += [".."]
+from test_bed_adapter.options.test_bed_options import TestBedOptions
+from test_bed_adapter import TestBedAdapter
+
 
 class ProducerExample:
 

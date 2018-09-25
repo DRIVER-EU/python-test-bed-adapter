@@ -1,12 +1,12 @@
 import unittest
 import sys
-from test_bed_options import TestBedOptions
-from test_bed_adapter import TestBedAdapter
 import threading
 import time
 import logging
 import json
 sys.path.append("..")
+from test_bed_adapter.options.test_bed_options import TestBedOptions
+from test_bed_adapter import TestBedAdapter
 logging.basicConfig(level=logging.INFO)
 
 class TestConsumerWithAdapter(unittest.TestCase):
