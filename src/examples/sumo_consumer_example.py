@@ -19,7 +19,7 @@ class ConsumerExample:
            "fetch_all_versions": False,
            "from_off_set": True,
            "client_id": 'PYTHON TEST BED ADAPTER',
-           "consume": ["sumo_configuration"]}
+           "consume": ["sumo_SumoConfiguration", "system_heartbeat", "system_timing"]}
 
         test_bed_options = TestBedOptions(options)
         test_bed_adapter = TestBedAdapter(test_bed_options)
@@ -32,7 +32,8 @@ class ConsumerExample:
 
         # We initialize the process (catching schemas and so on) and we listen the messages from the topic standard_cap
         test_bed_adapter.initialize()
-        test_bed_adapter.consumer_managers["sumo_configuration"].listen_messages()
+        test_bed_adapter.consumer_managers["sumo_SumoConfiguration"].listen_messages()
+#        test_bed_adapter.consumer_managers["system_heartbeat"].listen_messages()
 
 
 
