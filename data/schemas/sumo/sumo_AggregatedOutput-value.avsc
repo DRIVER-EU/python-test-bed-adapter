@@ -18,8 +18,10 @@
       "name": "edgeData",
       "doc": "list of aggregated data items for each edge in the interval",
       "type": {
+          "name": "edgeDataArray",
           "type": "array",
           "items": {
+            "name": "edgeDataArrayEntry",
             "type": "record",
             "fields": [
               {

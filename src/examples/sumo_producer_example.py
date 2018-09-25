@@ -23,7 +23,7 @@ class ProducerExample:
             "fetch_all_versions": False,
             "from_off_set": True,
             "client_id": 'PYTHON TEST BED ADAPTER',
-            "produce": ["sumo_configuration"]}
+            "produce": ["sumo_SumoConfiguration"]}
 
         test_bed_options = TestBedOptions(options)
         test_bed_adapter = TestBedAdapter(test_bed_options)
@@ -44,7 +44,7 @@ class ProducerExample:
         test_bed_adapter.on_sent += message_sent_handler
 
         test_bed_adapter.initialize()
-        test_bed_adapter.producer_managers["sumo_configuration"].send_messages(message)
+        test_bed_adapter.producer_managers["sumo_SumoConfiguration"].send_messages(message)
 
 if __name__ == '__main__':
     ProducerExample().main()

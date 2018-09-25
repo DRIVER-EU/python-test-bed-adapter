@@ -12,6 +12,7 @@
     {
       "name": "area",
       "type": {
+        "name": "areaPoly",
         "type": "record",
         "fields": [
           {

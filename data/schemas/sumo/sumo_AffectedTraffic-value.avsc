@@ -18,8 +18,10 @@
       "name": "areaData",
       "doc": "list of aggregated data items for each area in the interval",
       "type": {
+          "name": "areaArray",
           "type": "array",
           "items": {
+            "name": "areaArrayEntry",
             "type": "record",
             "fields": [
               {

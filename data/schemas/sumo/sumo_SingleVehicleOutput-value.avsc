@@ -12,8 +12,10 @@
     {
       "name": "vehicleData",
       "type": {
+          "name": "vehicleDataArray",
           "type": "array",
           "items": {
+            "name": "vehicleDataArrayEntry",
             "type": "record",
             "fields": [
               {
