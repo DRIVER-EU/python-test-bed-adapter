@@ -5,8 +5,8 @@ import uuid
 
 
 class ProducerManager(KafkaManager):
-    def __init__(self, kafka_topic, kafka_host, from_off_set, client_id, avro_helper_key, avro_helper_value, succesfully_sent_message, ssl_config):
-        super().__init__(kafka_topic, kafka_host, from_off_set, avro_helper_key, avro_helper_value, ssl_config)
+    def __init__(self, kafka_topic, kafka_host, exclude_internal_topics, client_id, avro_helper_key, avro_helper_value, succesfully_sent_message, ssl_config):
+        super().__init__(kafka_topic, kafka_host, exclude_internal_topics, avro_helper_key, avro_helper_value, ssl_config)
 
         self.client_id = client_id
         self.heartbeat_topic = b"system_heartbeat"

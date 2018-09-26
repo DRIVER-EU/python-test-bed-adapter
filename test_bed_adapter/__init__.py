@@ -55,7 +55,10 @@ class TestBedAdapter:
 
                 # We create a new consumer for this topic. The last input is the callback where we handle the message recieved and decoded from kafka.
                 manager = ConsumerManager(bytes(topic_name, 'utf-8'), self.test_bed_options.kafka_host,
-                                          self.test_bed_options.from_off_set,
+                                          self.test_bed_options.exclude_internal_topics,
+                                          self.test_bed_options.reset_offset_on_start,
+                                          self.test_bed_options.offset_type,
+                                          self.test_bed_options.client_id,
                                           avro_helper_key, avro_helper_value,
                                           self.handle_message, self.ssl_config)
                 self.consumer_managers[topic_name] = manager
@@ -74,7 +77,7 @@ class TestBedAdapter:
 
                 # We create a new producer for this topic. The last input is the callback where we handle the message sent.
                 manager = ProducerManager(bytes(topic_name, 'utf-8'), self.test_bed_options.kafka_host,
-                                          self.test_bed_options.from_off_set,
+                                          self.test_bed_options.exclude_internal_topics,
                                           self.test_bed_options.client_id,
                                           avro_helper_key, avro_helper_value,
                                           self.succesfully_sent_message, self.ssl_config)

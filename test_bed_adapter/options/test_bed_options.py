@@ -26,7 +26,13 @@ class TestBedOptions:
         self.fetch_all_topics = False
 
         # If set true, use the topics offset to retreive messages
-        self.from_off_set = False
+        self.exclude_internal_topics = False
+
+        # Reset the offset messages on start.
+        self.reset_offset_on_start = False
+
+        # Offset type possibles: LATEST, EARLIEST
+        self.offset_type = "LATEST"
 
         # How often should the adapter try to reconnect to the kafka server if the first time fails
         self.reconnection_retries = 5

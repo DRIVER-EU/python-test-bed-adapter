@@ -6,11 +6,11 @@ import logging
 import uuid
 
 class KafkaManager():
-    def __init__(self, kafka_topic, kafka_host, from_off_set, avro_helper_key, avro_helper_value, ssl_config):
+    def __init__(self, kafka_topic, kafka_host, exclude_internal_topics, avro_helper_key, avro_helper_value, ssl_config):
         self.topic = kafka_topic
         self.avro_helper_key = avro_helper_key
         self.avro_helper_value = avro_helper_value
-        self.from_off_set = from_off_set
+        self.from_off_set = exclude_internal_topics
         self.kafka_host = kafka_host
         self.ssl_config = ssl_config
 

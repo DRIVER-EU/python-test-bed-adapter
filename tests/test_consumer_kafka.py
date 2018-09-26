@@ -39,9 +39,9 @@ class TestConsumerWithSchemas(unittest.TestCase):
 
         on_message_handler = lambda x: logging.info(x)
 
-        consumer_kafka = ConsumerManager(topic, test_bed_options.kafka_host, test_bed_options.from_off_set,
-                                      avro_helper_key,
-                                      avro_helper_value, on_message_handler)
+        consumer_kafka = ConsumerManager(topic, test_bed_options.kafka_host, test_bed_options.exclude_internal_topics,
+                                         avro_helper_key,
+                                         avro_helper_value, on_message_handler)
 
         consumer_kafka.listen_messages()
 

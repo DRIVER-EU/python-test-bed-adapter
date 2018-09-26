@@ -3,7 +3,9 @@
   "kafka_host": "localhost:3501",
   "schema_registry": "http://localhost:3502",
   "fetch_all_versions": false,
+  "exclude_internal_topics": true,
   "client_id": "PYTHON TEST BED ADAPTER",
+  "reset_offset_on_start": false,
   "heartbeat_interval" : 0.1,
   "consume": ["standard_cap","standard_xvr_geojson"]
 }

@@ -20,7 +20,7 @@ class ProducerExample:
             "schema_registry": 'http://localhost:3502',
             "fetch_all_versions": False,
             "from_off_set": True,
-            "client_id": 'PYTHON TEST BED ADAPTER',
+            "client_id": 'PYTHON TEST BED ADAPTER PRODUCER++',
             "produce": ["standard_cap"]}
 
         test_bed_options = TestBedOptions(options)
