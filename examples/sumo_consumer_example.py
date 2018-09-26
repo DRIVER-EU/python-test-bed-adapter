@@ -1,13 +1,21 @@
 #!/usr/bin/env python3
-import logging
-logging.basicConfig(level=logging.INFO)
 import time
 import sys
+import queue
+import threading
+import logging
+logging.basicConfig(level=logging.INFO)
 sys.path += [".."]
 from test_bed_adapter.options.test_bed_options import TestBedOptions
 from test_bed_adapter import TestBedAdapter
 
 class ConsumerExample:
+    def __init__(self):
+        self._queue = queue.Queue()
+
+    def addToQueue(self, message):
+        self._queue.put(message)
+
     def main(self):
         options = {
            "auto_register_schemas": True,
@@ -19,21 +27,20 @@ class ConsumerExample:
            "fetch_all_versions": False,
            "from_off_set": True,
            "client_id": 'PYTHON TEST BED ADAPTER',
-           "consume": ["sumo_SumoConfiguration", "system_heartbeat", "system_timing"]}
+           "consume": ["sumo_SumoConfiguration", "system_timing"]}
 
-        test_bed_options = TestBedOptions(options)
-        test_bed_adapter = TestBedAdapter(test_bed_options)
+        test_bed_adapter = TestBedAdapter(TestBedOptions(options))
+        test_bed_adapter.on_message += self.addToQueue
 
-        # This funcion will act as a handler. It only prints the incoming messages
-        handle_message = lambda message: logging.info("\n\n-----\nIncoming message\n-----\n\n" + str(message))
-
-        # Here we add the message to the test bed adapter
-        test_bed_adapter.on_message += handle_message
-
-        # We initialize the process (catching schemas and so on) and we listen the messages from the topic standard_cap
         test_bed_adapter.initialize()
-        test_bed_adapter.consumer_managers["sumo_SumoConfiguration"].listen_messages()
-#        test_bed_adapter.consumer_managers["system_heartbeat"].listen_messages()
+        threads = []
+        for topic in options["consume"]:
+            threads.append(threading.Thread(target=test_bed_adapter.consumer_managers[topic].listen_messages))
+            threads[-1].start()
+        while True:
+            message = self._queue.get()
+            logging.info("\n\n-----\nHandling message\n-----\n\n" + str(message))
+
 
 
 

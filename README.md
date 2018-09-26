@@ -26,5 +26,5 @@ After that to install the dependencies specified on the file
  ```pip3 install -r requirements.txt```
  
  ## Examples and usage
- Check the examples of [consumer](https://github.com/DRIVER-EU/python-test-bed-adapter/blob/master/src/examples/consumer_example.py)
- and [producer](https://github.com/DRIVER-EU/python-test-bed-adapter/blob/master/src/examples/producer_example.py).
+ Check the examples of [consumer](https://github.com/DRIVER-EU/python-test-bed-adapter/blob/master/examples/consumer_example.py)
+ and [producer](https://github.com/DRIVER-EU/python-test-bed-adapter/blob/master/examples/producer_example.py).
