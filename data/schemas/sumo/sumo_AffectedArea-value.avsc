@@ -41,12 +41,12 @@
     },
     {
       "name": "begin",
-      "type": "int",
+      "type": "long",
       "doc": "Begin time of the duration in milliseconds"
     },
     {
       "name": "end",
-      "type": "int",
+      "type": "long",
       "doc": "End time of the duration in milliseconds"
     },
     {

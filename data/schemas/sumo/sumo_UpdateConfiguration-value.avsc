@@ -6,13 +6,13 @@
   "fields": [
     {
       "name": "singleVehicle",
-      "type": "int",
+      "type": "long",
       "default": -1,
       "doc": "Aggregation period for the outputs of each vehicle in milliseconds (default is -1, which means do not collect individual data)"
     },
     {
       "name": "affectedTraffic",
-      "type": "int",
+      "type": "long",
       "default": 300000,
       "doc": "Aggregation period for the statistics about affected traffic in milliseconds"
     }

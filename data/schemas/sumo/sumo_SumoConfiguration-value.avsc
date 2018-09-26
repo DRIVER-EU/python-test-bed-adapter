@@ -11,29 +11,29 @@
     },
     {
       "name": "begin",
-      "type": "int",
+      "type": "long",
       "doc": "Begin time of the simulation in milliseconds >= 0"
     },
     {
       "name": "end",
-      "type": "int",
+      "type": "long",
       "doc": "End time of the simulation in milliseconds > begin"
     },
     {
       "name": "aggregation",
-      "type": "int",
+      "type": "long",
       "default": 900000,
       "doc": "Aggregation period for simulation outputs in milliseconds > 0"
     },
     {
       "name": "singleVehicle",
-      "type": "int",
+      "type": "long",
       "default": -1,
       "doc": "Aggregation period for the outputs of each vehicle in milliseconds (default is -1, which means do not collect individual data)"
     },
     {
       "name": "affectedTraffic",
-      "type": "int",
+      "type": "long",
       "default": 300000,
       "doc": "Aggregation period for the statistics about affected traffic in milliseconds"
     }
