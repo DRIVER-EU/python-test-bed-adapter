@@ -38,7 +38,7 @@ class TestHeartbeat(unittest.TestCase):
     def run_heartbeat_in_thread(self, e):
         data = set()
         heartbeat_interval = 1
-        options_file = open("test_bed_options_for_tests_producer.json", encoding="utf8")
+        options_file = open("config_files_for_testing/test_bed_options_for_tests_producer.json", encoding="utf8")
         options = json.loads(options_file.read())
         options_file.close()
         test_bed_options = TestBedOptions(options)

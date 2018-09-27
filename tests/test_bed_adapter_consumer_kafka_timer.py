@@ -5,21 +5,28 @@ import time
 import logging
 import json
 sys.path.append("..")
+import datetime
 from test_bed_adapter.options.test_bed_options import TestBedOptions
 from test_bed_adapter import TestBedAdapter
 logging.basicConfig(level=logging.INFO)
 
 class TestConsumerWithAdapter(unittest.TestCase):
 
-    def test_consumer_from_adapter(self):
+    def test_consumer_from_adapter(self, **keywords):
         self.was_any_message_obtained = False
         self.wait_seconds = 5
-        options_file = open("test_bed_options_for_tests_consumer.json", encoding="utf8")
-        options = json.loads(options_file.read())
-        options_file.close()
 
-        test_bed_options = TestBedOptions(options)
-        test_bed_adapter = TestBedAdapter(test_bed_options)
+        #If no options are provided we grab them from file
+        if (not "test_bed_options" in keywords.keys()):
+            options_file = open("config_files_for_testing/test_bed_options_for_tests_consumer.json", encoding="utf8")
+            options = json.loads(options_file.read())
+            options_file.close()
+
+            test_bed_options = TestBedOptions(options)
+            test_bed_options.client_id = test_bed_options.client_id + "---" + str(datetime.datetime.now())
+            test_bed_adapter = TestBedAdapter(test_bed_options)
+        else:
+            test_bed_options = keywords["test_bed_options"]
 
         #We add the message handler
         test_bed_adapter.on_message += self.handle_message
@@ -38,7 +45,12 @@ class TestConsumerWithAdapter(unittest.TestCase):
             print
             "thread has already finished."
 
-        self.assertTrue(self.was_any_message_obtained)
+        # If we have a parameter with a boolean "expect_messages" we check that we obtained messages according to it.
+        if ("expect_messages" in keywords.keys()):
+            self.assertTrue(keywords["expect_messages"] == self.was_any_message_obtained)
+        else:
+            self.assertTrue(self.was_any_message_obtained)
+
         test_bed_adapter.stop()
         pass
 

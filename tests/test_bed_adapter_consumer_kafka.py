@@ -13,7 +13,7 @@ class TestConsumerWithAdapter(unittest.TestCase):
     def test_consumer_using_adapter(self):
         self.was_any_message_obtained = False
 
-        options_file = open("test_bed_options_for_tests_consumer.json", encoding="utf8")
+        options_file = open("config_files_for_testing/test_bed_options_for_tests_consumer.json", encoding="utf8")
         options = json.loads(options_file.read())
         options_file.close()
 

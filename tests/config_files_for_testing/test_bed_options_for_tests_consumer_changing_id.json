@@ -1,0 +1,12 @@
+{
+  "auto_register_schemas":true,
+  "kafka_host": "localhost:3501",
+  "schema_registry": "http://localhost:3502",
+  "fetch_all_versions": false,
+  "exclude_internal_topics": false,
+  "reset_offset_on_start": false,
+  "offset_type" : "EARLIEST",
+  "client_id": "PYTHON TEST BED CONSUMER --",
+  "heartbeat_interval" : 1,
+  "consume": ["standard_cap"]
+}
