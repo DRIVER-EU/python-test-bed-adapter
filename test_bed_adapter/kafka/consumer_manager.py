@@ -20,8 +20,14 @@ class ConsumerManager(KafkaManager):
             self.auto_offset_reset = OffsetType.EARLIEST
 
         # We create the simple consumer with the options
-        self.simple_consumer = self.client_topic.get_simple_consumer(reset_offset_on_start= self.reset_offset_on_start, auto_commit_enable=True, auto_commit_interval_ms=10, auto_offset_reset=self.auto_offset_reset, consumer_group=self.consumer_group)
-        self.simple_consumer._consumer_id = self.consumer_group
+        self.simple_consumer = self.client_topic.get_simple_consumer(auto_commit_enable=True,
+                                                                     auto_commit_interval_ms=10,
+                                                                     reset_offset_on_start=self.reset_offset_on_start,
+                                                                     auto_offset_reset=self.auto_offset_reset,
+                                                                     consumer_id=self.consumer_group,
+                                                                     consumer_group=self.consumer_group)
+
+        # self.simple_consumer._consumer_id = self.consumer_group;
         # The emisor handler will be fired if a message is listened
         self.on_message = EventHook()
         if handle_message:

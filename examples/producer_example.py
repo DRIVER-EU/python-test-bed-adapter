@@ -3,6 +3,7 @@ import sys
 import json
 import os
 import logging
+import datetime
 logging.basicConfig(level=logging.INFO)
 sys.path += [".."]
 from test_bed_adapter.options.test_bed_options import TestBedOptions
@@ -20,10 +21,11 @@ class ProducerExample:
             "schema_registry": 'http://localhost:3502',
             "fetch_all_versions": False,
             "from_off_set": True,
-            "client_id": 'PYTHON TEST BED ADAPTER PRODUCER++',
+            "client_id": 'PYTHON TEST BED ADAPTER PRODUCER',
             "produce": ["standard_cap"]}
 
         test_bed_options = TestBedOptions(options)
+        test_bed_options.client_id = test_bed_options.client_id + "---" + str(datetime.datetime.now())
         test_bed_adapter = TestBedAdapter(test_bed_options)
 
 
