@@ -1,4 +1,3 @@
-from . import kafka, options, registry, utils
 from .utils.event_hook import EventHook
 from .options.test_bed_options import TestBedOptions
 from .kafka.consumer_manager import ConsumerManager

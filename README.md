@@ -18,13 +18,19 @@ as explained [here](https://github.com/DRIVER-EU/avro-schemas).
   - Configuration (topic: connect-status-configuration), so you can see which 
   topics clients consume and produce.
 
-## Pre-requisites
+## Installation
 You need to install [Python 3+](https://www.python.org/). 
-After that to install the dependencies specified on the file 
+
+To install the [PYPI](https://pypi.org/project/python-test-bed-adapter/) package run
+ ```pip3 install python-test-bed-adapter```
+
+### Using the Github repo
+If you clone the Github repository, to run the examples you will need to install the dependencies
+specified on the file 
 [requirements.txt](https://github.com/DRIVER-EU/python-test-bed-adapter/blob/master/requirements.txt)
- run
+ For that, run
  ```pip3 install -r requirements.txt```
- 
+ from the project folder.
  ## Examples and usage
  Check the examples of [consumer](https://github.com/DRIVER-EU/python-test-bed-adapter/blob/master/examples/consumer_example.py)
  and [producer](https://github.com/DRIVER-EU/python-test-bed-adapter/blob/master/examples/producer_example.py).
