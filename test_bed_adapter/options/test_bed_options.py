@@ -32,7 +32,7 @@ class TestBedOptions:
         self.reset_offset_on_start = False
 
         # Offset type possibles: LATEST, EARLIEST
-        self.offset_type = "LATEST"
+        self.offset_type = "EARLIEST"
 
         # How often should the adapter try to reconnect to the kafka server if the first time fails
         self.reconnection_retries = 5
