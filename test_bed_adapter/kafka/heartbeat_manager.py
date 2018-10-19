@@ -19,8 +19,8 @@ class HeartbeatManager():
         date_ms = int(time.mktime(date.timetuple())) * 1000
 
         message_json = {"id": self.client_id, "alive": date_ms}
-        message = {"messages": message_json}
-        self.kafka_heartbeat_producer.send_messages(message)
+        messages = [{"message": message_json}]
+        self.kafka_heartbeat_producer.send_messages(messages)
 
     def stop(self):
         self.helper.stop_set_interval_thread()

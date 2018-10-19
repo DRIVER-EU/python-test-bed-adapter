@@ -78,6 +78,7 @@ class TestBedAdapter:
                 manager = ProducerManager(bytes(topic_name, 'utf-8'), self.test_bed_options.kafka_host,
                                           self.test_bed_options.exclude_internal_topics,
                                           self.test_bed_options.client_id,
+                                          self.test_bed_options.send_messages_asynchronously,
                                           avro_helper_key, avro_helper_value,
                                           self.succesfully_sent_message, self.ssl_config)
                 self.producer_managers[topic_name] = manager

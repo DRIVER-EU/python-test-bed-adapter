@@ -22,6 +22,7 @@ class ProducerExample:
             "fetch_all_versions": False,
             "from_off_set": True,
             "client_id": 'PYTHON TEST BED ADAPTER PRODUCER',
+            "heartbeat_interval" : "10",
             "produce": ["standard_cap"]}
 
         test_bed_options = TestBedOptions(options)
@@ -32,9 +33,15 @@ class ProducerExample:
         #We load a test message from file
         message_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),"sample_messages", "example_amber_alert.json")
         example_message_file = open(message_path, encoding="utf-8")
-        message_json = json.loads(example_message_file.read())
+        body = json.loads(example_message_file.read())
         example_message_file.close()
-        message = {"messages":message_json}
+
+        message = {"message":body}
+        messages = []
+        for i in range(1,5):
+            messages.append(message)
+
+
 
 
         # This funcion will act as a handler. It only prints the message once it has been sent
@@ -44,7 +51,7 @@ class ProducerExample:
         test_bed_adapter.on_sent += message_sent_handler
 
         test_bed_adapter.initialize()
-        test_bed_adapter.producer_managers["standard_cap"].send_messages(message)
+        test_bed_adapter.producer_managers["standard_cap"].send_messages(messages)
 
 if __name__ == '__main__':
     ProducerExample().main()

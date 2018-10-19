@@ -2,7 +2,6 @@ import unittest
 import sys
 import json
 import os
-import datetime
 sys.path.append("..")
 from test_bed_adapter.options.test_bed_options import TestBedOptions
 from test_bed_adapter import TestBedAdapter
@@ -34,11 +33,12 @@ class TestProducerWithAdapter(unittest.TestCase):
         example_message_file = open(message_path, encoding="utf-8")
         message_json = json.loads(example_message_file.read())
         example_message_file.close()
-        message = {"messages": message_json}
+
+        messages = [{"message": message_json}]
 
         test_bed_adapter.on_sent += self.message_sent_handler
         test_bed_adapter.initialize()
-        test_bed_adapter.producer_managers["standard_cap"].send_messages(message)
+        test_bed_adapter.producer_managers["standard_cap"].send_messages(messages)
 
         self.assertTrue(self.message_was_sent)
         test_bed_adapter.stop()
