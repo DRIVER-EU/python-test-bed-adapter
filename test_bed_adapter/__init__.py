@@ -80,7 +80,7 @@ class TestBedAdapter:
                                           self.test_bed_options.client_id,
                                           self.test_bed_options.send_messages_asynchronously,
                                           avro_helper_key, avro_helper_value,
-                                          self.succesfully_sent_message, self.ssl_config)
+                                          self.successfully_sent_message, self.ssl_config)
                 self.producer_managers[topic_name] = manager
                 logging.info("Initialized kafka producer manager for topic" + topic_name)
             else:
@@ -97,12 +97,14 @@ class TestBedAdapter:
         # We stop all the kafka listeners
         for manager in list(self.consumer_managers.values()):
             manager.stop()
+        for manager in list(self.producer_managers.values()):
+            manager.stop()
         self.connected = False
 
     def handle_message(self, message):
         # We emit the message recieved
         self.on_message.fire(message)
 
-    def succesfully_sent_message(self, message):
+    def successfully_sent_message(self, message):
         # We emit the message sent
         self.on_sent.fire(message)

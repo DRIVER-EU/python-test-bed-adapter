@@ -22,7 +22,7 @@ class ProducerExample:
             "fetch_all_versions": False,
             "from_off_set": True,
             "client_id": 'PYTHON TEST BED ADAPTER PRODUCER',
-            "heartbeat_interval" : "10",
+            "heartbeat_interval" : 10,
             "produce": ["standard_cap"]}
 
         test_bed_options = TestBedOptions(options)
@@ -37,11 +37,7 @@ class ProducerExample:
         example_message_file.close()
 
         message = {"message":body}
-        messages = []
-        for i in range(1,5):
-            messages.append(message)
-
-
+        messages = 5 * [message]
 
 
         # This funcion will act as a handler. It only prints the message once it has been sent
@@ -52,6 +48,7 @@ class ProducerExample:
 
         test_bed_adapter.initialize()
         test_bed_adapter.producer_managers["standard_cap"].send_messages(messages)
+        test_bed_adapter.stop()
 
 if __name__ == '__main__':
     ProducerExample().main()

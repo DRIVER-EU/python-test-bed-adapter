@@ -35,10 +35,6 @@ class ProducerExample:
         body = json.loads(example_message_file.read())
         example_message_file.close()
 
-        message = {"message": body}
-        messages = []
-
-
         # This funcion will act as a handler. It only prints the message once it has been sent
         message_sent_handler = lambda message : logging.info("\n\n------\nmessage sent:\n------\n\n" + str(message))
 
@@ -46,7 +42,8 @@ class ProducerExample:
         test_bed_adapter.on_sent += message_sent_handler
 
         test_bed_adapter.initialize()
-        test_bed_adapter.producer_managers["sumo_SumoConfiguration"].send_messages(messages)
+        test_bed_adapter.producer_managers["sumo_SumoConfiguration"].send_messages([body])
+        test_bed_adapter.stop()
 
 if __name__ == '__main__':
     ProducerExample().main()
