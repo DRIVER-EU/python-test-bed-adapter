@@ -5,6 +5,10 @@ import json
 from tests.test_bed_adapter_producer_kafka import TestProducerWithAdapter
 from test_bed_adapter.options.test_bed_options import TestBedOptions
 
+import sys
+sys.path.append("..")
+
+
 logging.basicConfig(level=logging.INFO)
 
 
