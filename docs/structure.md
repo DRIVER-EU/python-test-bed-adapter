@@ -2,6 +2,10 @@
 
 The basic structure of this project imitates the instance of test bed adapted for nodejs  [node-test-bed-adapter](https://github.com/DRIVER-EU/node-test-bed-adapter)
 
+This is the basic that we will explain in more detail:
+
+![test bed](test_bed_adapter_diagram.png)
+
 ## The class TestBedAdapter
 
 ``TestBedAdapter`` located in  _(test_bed_adapter/__init__.py)_ is the main class of the test bed adapter.
