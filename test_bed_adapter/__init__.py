@@ -48,20 +48,24 @@ class TestBedAdapter:
 
     def init_consumers(self):
         for topic_name in self.test_bed_options.consume:
-            if (topic_name in list(self.schema_registry.values_schema.keys())):
+            if topic_name in list(self.schema_registry.values_schema.keys()):
                 avro_helper_key = self.schema_registry.keys_schema[topic_name]["avro_helper"]
                 avro_helper_value = self.schema_registry.values_schema[topic_name]["avro_helper"]
 
-                # We create a new consumer for this topic. The last input is the callback where we handle the message recieved and decoded from kafka.
-                manager = ConsumerManager(bytes(topic_name, 'utf-8'), self.test_bed_options.kafka_host,
+                # We create a new consumer for this topic. The last input is the callback
+                # where we handle the message received and decoded from kafka.
+                manager = ConsumerManager(bytes(topic_name, 'utf-8'),
+                                          self.test_bed_options.kafka_host,
                                           self.test_bed_options.exclude_internal_topics,
                                           self.test_bed_options.reset_offset_on_start,
                                           self.test_bed_options.offset_type,
                                           self.test_bed_options.client_id,
-                                          avro_helper_key, avro_helper_value,
-                                          self.handle_message, self.ssl_config)
+                                          avro_helper_key,
+                                          avro_helper_value,
+                                          self.handle_message,
+                                          self.ssl_config)
                 self.consumer_managers[topic_name] = manager
-                logging.info("Initialized kafka consumer manager for topic" + topic_name)
+                logging.info("Initialized kafka consumer manager for topic " + topic_name)
             else:
                 logging.error("No schema found for topic " + topic_name)
 
@@ -70,11 +74,12 @@ class TestBedAdapter:
             self.test_bed_options.produce.append(self.heartbeat_topic)
 
         for topic_name in self.test_bed_options.produce:
-            if (topic_name in list(self.schema_registry.values_schema.keys())):
+            if topic_name in list(self.schema_registry.values_schema.keys()):
                 avro_helper_key = self.schema_registry.keys_schema[topic_name]["avro_helper"]
                 avro_helper_value = self.schema_registry.values_schema[topic_name]["avro_helper"]
 
-                # We create a new producer for this topic. The last input is the callback where we handle the message sent.
+                # We create a new producer for this topic. The last input is the callback
+                # where we handle the message sent.
                 manager = ProducerManager(bytes(topic_name, 'utf-8'), self.test_bed_options.kafka_host,
                                           self.test_bed_options.exclude_internal_topics,
                                           self.test_bed_options.client_id,
@@ -92,7 +97,7 @@ class TestBedAdapter:
         self.heartbeat_manager.start_heartbeat_async()
 
     def stop(self):
-        # We stop the heatbeat thread
+        # We stop the heartbeat thread
         self.heartbeat_manager.stop()
         # We stop all the kafka listeners
         for manager in list(self.consumer_managers.values()):

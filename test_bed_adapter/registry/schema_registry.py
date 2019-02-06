@@ -13,9 +13,11 @@ class SchemaRegistry(SchemaAccess):
         self.selected_topics = {"consume": test_bed_options.consume, "produce": test_bed_options.produce}
         self.fetch_all_versions = test_bed_options.fetch_all_versions
 
-        #A dictionary with all the topic keys and the avro helpers. This will be necessary to decode the kafka messages
+        # A dictionary with all the topic keys and the avro helpers.
+        # This will be necessary to decode the key from kafka messages
         self.keys_schema = {}
-        #A dictionary with all the topic values and the avro helpers. This will be necessary to decode the kafka messages
+        # A dictionary with all the topic values and the avro helpers.
+        # This will be necessary to decode the value from kafka messages
         self.values_schema = {}
         self.schema_meta = {}
 
@@ -32,23 +34,22 @@ class SchemaRegistry(SchemaAccess):
         fetch_all_schema_topics_url = self.schema_url + "/subjects"
         try:
             logging.info("Fetching all schemas using url:" + fetch_all_schema_topics_url)
-            response = requests.get(fetch_all_schema_topics_url, headers={'Accept': 'application/vnd.schemaregistry.v1+json'})
+            response = requests.get(fetch_all_schema_topics_url,
+                                    headers={'Accept': 'application/vnd.schemaregistry.v1+json'})
             self.topics = response.json()
         except:
             logging.error("Error fetching all schemas using url:" + fetch_all_schema_topics_url)
-
-
 
     def fetch_all_schema_versions(self, topic):
         fetch_all_versions_url = self.schema_url + '/subjects/' + topic + '/versions'
         try:
             logging.info("Fetching all schema versions using url:" + fetch_all_versions_url)
-            response = requests.get(fetch_all_versions_url, headers={'Accept': 'application/vnd.schemaregistry.v1+json'})
+            response = requests.get(fetch_all_versions_url,
+                                    headers={'Accept': 'application/vnd.schemaregistry.v1+json'})
             return response.json()
         except:
             logging.error("Error schema versions using url:" + fetch_all_versions_url)
             return None
-
 
     def fetch_schema(self, topic):
         schema_topic_latest = self.fetch_lastest_version(topic)
@@ -84,8 +85,10 @@ class SchemaRegistry(SchemaAccess):
 
     def register_schema(self, schema_topic):
         topic = schema_topic["topic"]
-        logging.info("Registering schema " +  topic)
-        avro_helper = AvroSchemaHelper(schema_topic["response_raw"]["schema"], topic)
+        logging.info("Registering schema " + topic)
+        avro_helper = AvroSchemaHelper(schema_topic["response_raw"]["schema"],
+                                       topic,
+                                       schema_topic["response_raw"]["id"])
         schema_topic["avro_helper"] = avro_helper
 
         item = {"avro_helper": avro_helper, "sr_id": schema_topic["response_raw"]["id"]}

@@ -4,14 +4,16 @@ import io
 import sys
 import json
 import logging
+import binascii
 
 import avro.datafile
 class AvroSchemaHelper:
     avro_schema: object
 
-    def __init__(self, schema_str, topic):
+    def __init__(self, schema_str, topic, schema_id):
         self._schema_str = schema_str
         self.topic = topic
+        self._schema_id = schema_id
         json_schema = json.loads(self._schema_str)
         self.avro_schema = avro.schema.SchemaFromJSONData(json_schema)
 
@@ -21,7 +23,10 @@ class AvroSchemaHelper:
         encoder = avro.io.BinaryEncoder(bytes_writer)
         writer.write(json_messages, encoder)
         raw_bytes = bytes_writer.getvalue()
-        return raw_bytes
+        # Add 5-byte header the first byte is reserved for future, 4 bytes for 32 bit number indicating ID
+        return bytes(bytearray(b'\x00') +
+                     bytearray(self._schema_id.to_bytes(4, byteorder='big')) +
+                     bytearray(raw_bytes))
 
     def avro_decode_message(self, message):
         if (message):
@@ -36,10 +41,10 @@ class AvroSchemaHelper:
             reader = avro.io.DatumReader(self.avro_schema)
             decoded_messages = []
 
-            #We iterate in case there are more than one messages
+            # We iterate in case there are more than one messages
             while (bytes_reader.tell() < len(message)):
                 try:
-                    #Here is where the messages are read
+                    # Here is where the messages are read
                     decoded_messages.append(reader.read(decoder))
                     sys.stdout.flush()
                 except Exception as e:

@@ -26,7 +26,7 @@ class ProducerManager(KafkaManager):
             self.producer = self.client_topic.get_sync_producer()
             logging.info("Messages will be sent synchronously")
 
-    def send_messages(self, messages:list):
+    def send_messages(self, messages: list):
         for m in messages:
             encoded_key, encoded_message = self._avro_encode(m)
             self.producer.produce(encoded_message, encoded_key)
@@ -36,7 +36,7 @@ class ProducerManager(KafkaManager):
     def _avro_encode(self, message):
         # Lazy people might just give the message itself as input
         if "message" not in message:
-            message = {"message" : message}
+            message = {"message": message}
         # If our message has a key we use it, otherwise we use a default one
         if "key" not in message:
             date = datetime.datetime.utcnow()

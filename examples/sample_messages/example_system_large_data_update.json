@@ -1,0 +1,6 @@
+{
+  "url": "http://localhost:3600/#/cluster/default/topic/n/standard_cap/data/rawdata",
+  "title": "Kafka Topics",
+  "description": "Visualizer of Kaftka messages classified by topics",
+  "dataType": "other"
+}
