@@ -55,7 +55,7 @@ def parse_json_file(file_name):
 
 if __name__ == '__main__':
     # Test standard cap
-    # ProducerExample().main("standard_cap", parse_json_file("example_amber_alert.json"))
+    ProducerExample().main("standard_cap", parse_json_file("example_amber_alert.json"))
 
     # Test system large data update
-    ProducerExample().main("system_large_data_update", parse_json_file("example_system_large_data_update.json"))
+    # ProducerExample().main("system_large_data_update", parse_json_file("example_system_large_data_update.json"))

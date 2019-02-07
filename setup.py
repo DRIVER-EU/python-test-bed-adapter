@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="python-test-bed-adapter",
-    version="0.0.3",
+    version="0.0.5",
     author="Hugo J. Bello",
     author_email="hjbello.wk@gmail.com",
     description="This is the test-bed adapter for Python: it allows you to easily connect Python services to the Apache Kafka test-bed via Python.",
