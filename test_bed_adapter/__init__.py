@@ -36,8 +36,8 @@ class TestBedAdapter:
 
     def initialize(self):
         logging.info("Initializing test bed")
-        self.schema_registry.start_process()
         self.schema_publisher.start_process()
+        self.schema_registry.start_process()
         self.init_consumers()
         self.init_producers()
         self.init_and_start_heartbeat()

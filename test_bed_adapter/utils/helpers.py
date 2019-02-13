@@ -24,7 +24,7 @@ class Helpers:
     def find_files_in_dir(directory:str):
         file_path = os.path.abspath(__file__)
         root_path = os.path.dirname(os.path.dirname(os.path.dirname(file_path)))
-        directory_path = os.path.join(root_path,directory)
+        directory_path = os.path.join(root_path, pathlib.Path(directory))
         if not os.path.isdir(directory_path):
             return []
 

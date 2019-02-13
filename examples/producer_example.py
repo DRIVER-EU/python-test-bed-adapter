@@ -12,7 +12,7 @@ from test_bed_adapter import TestBedAdapter
 
 class ProducerExample:
     @staticmethod
-    def main(schema_topic, body):
+    def main(schema_topic, body, use_ssl):
         options = {
             "auto_register_schemas": True,
             # "kafka_host": 'driver-testbed.eu:3501',
@@ -23,7 +23,17 @@ class ProducerExample:
             "from_off_set": True,
             "client_id": 'PYTHON TEST BED ADAPTER PRODUCER',
             "heartbeat_interval": 10,
-            "produce": [schema_topic]}
+            "produce": [schema_topic]
+        }
+
+        if use_ssl:
+            options["use_ssl"] = True
+            options["ca_file"] = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                              "sample-ssl-clients", "admin-tool-client-CARoot.pem")
+            options["cert_file"] = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                                "sample-ssl-clients", "admin-tool-client-certificate.pem")
+            options["key_file"] = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                               "sample-ssl-clients", "admin-tool-client-key.pem")
 
         test_bed_options = TestBedOptions(options)
         test_bed_options.client_id = test_bed_options.client_id + "---" + str(datetime.datetime.now())
@@ -55,7 +65,11 @@ def parse_json_file(file_name):
 
 if __name__ == '__main__':
     # Test standard cap
-    ProducerExample().main("standard_cap", parse_json_file("example_amber_alert.json"))
+    ProducerExample().main("standard_cap",
+                           parse_json_file("example_amber_alert.json"),
+                           use_ssl=False)
 
     # Test system large data update
-    # ProducerExample().main("system_large_data_update", parse_json_file("example_system_large_data_update.json"))
+    # ProducerExample().main("system_large_data_update",
+    #                        parse_json_file("example_system_large_data_update.json"),
+    #                        use_ssl=False)
