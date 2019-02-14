@@ -4,10 +4,12 @@ import json
 import os
 import logging
 import datetime
+import time
 logging.basicConfig(level=logging.INFO)
 sys.path += [".."]
 from test_bed_adapter.options.test_bed_options import TestBedOptions
 from test_bed_adapter import TestBedAdapter
+from test_bed_adapter.services.time_service import milliseconds_since_epoch
 
 
 class ProducerExample:
@@ -50,6 +52,12 @@ class ProducerExample:
 
         test_bed_adapter.initialize()
         test_bed_adapter.producer_managers[schema_topic].send_messages(messages)
+
+        time.sleep(10)
+
+        logging.info("Current date is %s" % test_bed_adapter.time_service.get_trial_date().strftime('%B %d %Y - %H:%M:%S'))
+        logging.info("Current elapsed time is %d" % test_bed_adapter.time_service.get_trial_elapsed_time())
+
         test_bed_adapter.stop()
 
 
@@ -65,11 +73,19 @@ def parse_json_file(file_name):
 
 if __name__ == '__main__':
     # Test standard cap
-    ProducerExample().main("standard_cap",
-                           parse_json_file("example_amber_alert.json"),
-                           use_ssl=False)
+    #ProducerExample().main("standard_cap",
+    #                       parse_json_file("example_amber_alert.json"),
+    #                       use_ssl=False)
 
     # Test system large data update
     # ProducerExample().main("system_large_data_update",
     #                        parse_json_file("example_system_large_data_update.json"),
     #                        use_ssl=False)
+
+    # Test system timing
+    time_dict = parse_json_file("example_system_timing.json")
+    time_dict["updatedAt"] = 0 # milliseconds_since_epoch(datetime.datetime.now())
+    time_dict["trialTime"] = 0 # milliseconds_since_epoch(datetime.datetime.now())
+    ProducerExample().main("system_timing",
+                           time_dict,
+                           use_ssl=False)

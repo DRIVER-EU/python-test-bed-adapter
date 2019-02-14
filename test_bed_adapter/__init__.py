@@ -5,6 +5,7 @@ from .kafka.producer_manager import ProducerManager
 from .registry.schema_registry import SchemaRegistry
 from .registry.schema_publisher import SchemaPublisher
 from .kafka.heartbeat_manager import HeartbeatManager
+from .services.time_service import TimeService
 from pykafka.connection import SslConfig
 import logging
 
@@ -15,11 +16,13 @@ class TestBedAdapter:
         self.test_bed_options = test_bed_options
         self.schema_registry = SchemaRegistry(test_bed_options)
         self.schema_publisher = SchemaPublisher(test_bed_options)
-        self.heartbeat_topic = "system_heartbeat"
-        self.heartbeat_interval = test_bed_options.heartbeat_interval
+        self.default_producer_topics = ["system_heartbeat"]
+        self.default_consumer_topics = ["system_timing"]
         self.consumer_managers = {}
         self.producer_managers = {}
         self.connected = False
+        self.heartbeat_manager: HeartbeatManager = None
+        self.time_service: TimeService = None
 
         # If we are using ssl we create the ssl config object
         if self.test_bed_options.use_ssl:
@@ -41,12 +44,17 @@ class TestBedAdapter:
         self.init_consumers()
         self.init_producers()
         self.init_and_start_heartbeat()
+        self.init_services()
         self.connected = True
 
         # We emit here by firing the on ready observable.
         self.on_ready.fire()
 
     def init_consumers(self):
+        # Make sure default topics are considered, avoid duplicates
+        self.test_bed_options.consume = list(set(self.test_bed_options.consume + self.default_consumer_topics))
+
+        # Instantiate one consumer manager for each topic
         for topic_name in self.test_bed_options.consume:
             if topic_name in list(self.schema_registry.values_schema.keys()):
                 avro_helper_key = self.schema_registry.keys_schema[topic_name]["avro_helper"]
@@ -70,9 +78,10 @@ class TestBedAdapter:
                 logging.error("No schema found for topic " + topic_name)
 
     def init_producers(self):
-        if self.heartbeat_topic not in self.test_bed_options.produce:
-            self.test_bed_options.produce.append(self.heartbeat_topic)
+        # Make sure default topics are considered, avoid duplicates
+        self.test_bed_options.produce = list(set(self.test_bed_options.produce + self.default_producer_topics))
 
+        # Instantiate one producer manager for each topic
         for topic_name in self.test_bed_options.produce:
             if topic_name in list(self.schema_registry.values_schema.keys()):
                 avro_helper_key = self.schema_registry.keys_schema[topic_name]["avro_helper"]
@@ -91,19 +100,33 @@ class TestBedAdapter:
             else:
                 logging.error("No schema found for topic " + topic_name)
 
+    def init_services(self):
+        if "system_timing" not in self.consumer_managers.keys():
+            logging.error("TimeService could not be initialized, No schema found for topic system_timing")
+        else:
+            self.time_service = TimeService(self.consumer_managers["system_timing"])
+
     def init_and_start_heartbeat(self):
-        self.heartbeat_manager = HeartbeatManager(self.producer_managers[self.heartbeat_topic], self.heartbeat_interval,
-                                                  self.test_bed_options.client_id)
-        self.heartbeat_manager.start_heartbeat_async()
+        if "system_heartbeat" in self.producer_managers.keys():
+            self.heartbeat_manager = HeartbeatManager(self.producer_managers["system_heartbeat"],
+                                                      self.test_bed_options.heartbeat_interval,
+                                                      self.test_bed_options.client_id)
+            self.heartbeat_manager.start_heartbeat_async()
+        else:
+            logging.error("Heartbeat could not be initialized, No schema found for topic system_heartbeat")
 
     def stop(self):
-        # We stop the heartbeat thread
-        self.heartbeat_manager.stop()
-        # We stop all the kafka listeners
+        # Stop the heartbeat thread
+        if self.heartbeat_manager is not None:
+            self.heartbeat_manager.stop()
+        # Stop all the kafka listeners
         for manager in list(self.consumer_managers.values()):
             manager.stop()
         for manager in list(self.producer_managers.values()):
             manager.stop()
+        # Stop time service
+        if self.time_service is not None:
+            self.time_service.stop()
         self.connected = False
 
     def handle_message(self, message):

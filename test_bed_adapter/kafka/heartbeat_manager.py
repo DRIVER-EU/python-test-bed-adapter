@@ -4,7 +4,7 @@ import datetime
 import time
 
 
-class HeartbeatManager():
+class HeartbeatManager:
     def __init__(self, kafka_heartbeat_producer: ProducerManager, heartbeat_interval, client_id):
         self.heartbeat_interval = heartbeat_interval
         self.client_id = client_id
