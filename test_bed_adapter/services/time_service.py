@@ -15,6 +15,23 @@ def millisecond_since_date(date):
     return (((dt.days * 24 * 60 * 60 + dt.seconds) * 1000000) + dt.microseconds) / 1000
 
 
+def get_field_value(message, field, default_value):
+    try:
+        return message['decoded_value'][0][field]
+    except (IndexError, KeyError):
+        logging.error("Time service: %s field expected in message but not present, assuming %s" %
+                      (field, str(default_value)))
+        return default_value
+
+
+def is_field_present(message, field):
+    try:
+        check = message['decoded_value'][0][field]
+        return True
+    except (IndexError, KeyError):
+        return False
+
+
 class TimeService:
     def __init__(self,
                  kafka_system_time_consumer: ConsumerManager):
@@ -39,12 +56,16 @@ class TimeService:
     def on_system_time_message(self, message):
         # logging.info("system_time message received: " + str(message))
         latency = 0  # self.localUpdatedSimTimeAt - self.updatedAt
-        self.localUpdatedSimTimeAt = datetime.now()
-        self.inputUpdatedAt = message['decoded_value'][0]['updatedAt']
-        self.trialTimeSpeed = message['decoded_value'][0]['timeElapsed']
-        self.timeElapsed = message['decoded_value'][0]['trialTimeSpeed']
-        self.state = message['decoded_value'][0]['state']
-        self.trialTime = message['decoded_value'][0]['trialTime'] + (latency * self.trialTimeSpeed)
+        self.inputUpdatedAt = get_field_value(message, 'updatedAt', self.inputUpdatedAt)
+        self.trialTimeSpeed = get_field_value(message, 'trialTimeSpeed', self.trialTimeSpeed)
+        self.timeElapsed = get_field_value(message, 'timeElapsed', self.timeElapsed)
+        self.state = get_field_value(message, 'state', self.state)
+        # TrialTime is special. Rx timestamp is not updated if this field is not present
+        if is_field_present(message, 'trialTime'):
+            self.localUpdatedSimTimeAt = datetime.now()
+            self.trialTime = message['decoded_value'][0]['trialTime'] + (latency * self.trialTimeSpeed)
+        else:
+            logging.error("Time service: trialTime field expected in message but not present")
 
     def get_trial_date(self):
         """ Returns UTC date of trial time """
