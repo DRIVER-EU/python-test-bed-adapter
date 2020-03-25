@@ -27,7 +27,7 @@ class ConsumerExample:
            "fetch_all_versions": False,
            "from_off_set": True,
            "client_id": 'PYTHON TEST BED ADAPTER',
-           "consume": ["sumo_SumoConfiguration", "system_timing"]}
+           "consume": ["sumo_SumoConfiguration", "simulation_time_mgmt"]}
 
         test_bed_adapter = TestBedAdapter(TestBedOptions(options))
         test_bed_adapter.on_message += self.addToQueue

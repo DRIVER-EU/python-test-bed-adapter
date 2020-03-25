@@ -39,10 +39,9 @@ class TimeService:
         kafka_system_time_consumer.on_message += self.on_system_time_message
         # Time variables
         self.localUpdatedSimTimeAt = datetime.now()
-        self.inputUpdatedAt = milliseconds_since_epoch(self.localUpdatedSimTimeAt)
-        self.trialTime = milliseconds_since_epoch(self.localUpdatedSimTimeAt)
-        self.timeElapsed = 0
-        self.trialTimeSpeed = 1.0  # 0 means pause, 1 is real-time
+        self.timestamp = milliseconds_since_epoch(self.localUpdatedSimTimeAt)
+        self.simulationTime = milliseconds_since_epoch(self.localUpdatedSimTimeAt)
+        self.simulationSpeed = 1.0  # 0 means pause, 1 is real-time
         self.state = "Idle"
 
         # Create threads
@@ -56,27 +55,26 @@ class TimeService:
     def on_system_time_message(self, message):
         # logging.info("system_time message received: " + str(message))
         latency = 0  # self.localUpdatedSimTimeAt - self.updatedAt
-        self.inputUpdatedAt = get_field_value(message, 'updatedAt', self.inputUpdatedAt)
-        self.trialTimeSpeed = get_field_value(message, 'trialTimeSpeed', self.trialTimeSpeed)
-        self.timeElapsed = get_field_value(message, 'timeElapsed', self.timeElapsed)
+        self.timestamp = get_field_value(message, 'timestamp', self.timestamp)
+        self.simulationSpeed = get_field_value(message, 'simulationSpeed', self.simulationSpeed)
         self.state = get_field_value(message, 'state', self.state)
         # TrialTime is special. Rx timestamp is not updated if this field is not present
-        if is_field_present(message, 'trialTime'):
+        if is_field_present(message, 'simulationTime'):
             self.localUpdatedSimTimeAt = datetime.now()
-            self.trialTime = message['decoded_value'][0]['trialTime'] + (latency * self.trialTimeSpeed)
+            self.simulationTime = message['decoded_value'][0]['simulationTime'] + (latency * self.simulationSpeed)
         else:
-            logging.error("Time service: trialTime field expected in message but not present")
+            logging.error("Time service: simulationTime field expected in message but not present")
 
     def get_trial_date(self):
         """ Returns UTC date of trial time """
         # Return elapsed if not idle otherwise return date
-        elapsed_ms = millisecond_since_date(self.localUpdatedSimTimeAt) * self.trialTimeSpeed
-        return datetime.fromtimestamp((self.trialTime + elapsed_ms) / 1000.0) if self.state is not "Idle" else datetime.now()
+        elapsed_ms = millisecond_since_date(self.localUpdatedSimTimeAt) * self.simulationSpeed
+        return datetime.fromtimestamp((self.simulationTime + elapsed_ms) / 1000.0) if self.state is not "Idle" else datetime.now()
 
     def get_trial_elapsed_time(self):
         """ Returns number of milliseconds elapsed since Unix Epoch """
-        return self.trialTime + millisecond_since_date(self.localUpdatedSimTimeAt)
+        return self.simulationTime + millisecond_since_date(self.localUpdatedSimTimeAt)
 
     def get_trial_speed(self):
         """ Returns current trial speed """
-        return self.trialTimeSpeed
+        return self.simulationSpeed

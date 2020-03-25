@@ -17,7 +17,7 @@ class TestBedAdapter:
         self.schema_registry = SchemaRegistry(test_bed_options)
         self.schema_publisher = SchemaPublisher(test_bed_options)
         self.default_producer_topics = ["system_heartbeat"]
-        self.default_consumer_topics = ["system_timing"]
+        self.default_consumer_topics = ["simulation_time_mgmt"]
         self.consumer_managers = {}
         self.producer_managers = {}
         self.connected = False
@@ -101,10 +101,10 @@ class TestBedAdapter:
                 logging.error("No schema found for topic " + topic_name)
 
     def init_services(self):
-        if "system_timing" not in self.consumer_managers.keys():
-            logging.error("TimeService could not be initialized, No schema found for topic system_timing")
+        if "simulation_time_mgmt" not in self.consumer_managers.keys():
+            logging.error("TimeService could not be initialized, No schema found for topic simulation_time_mgmt")
         else:
-            self.time_service = TimeService(self.consumer_managers["system_timing"])
+            self.time_service = TimeService(self.consumer_managers["simulation_time_mgmt"])
 
     def init_and_start_heartbeat(self):
         if "system_heartbeat" in self.producer_managers.keys():
