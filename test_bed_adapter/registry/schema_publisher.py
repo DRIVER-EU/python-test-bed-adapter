@@ -11,17 +11,23 @@ class SchemaPublisher(SchemaAccess):
     def __init__(self, test_bed_options):
         super().__init__(test_bed_options)
         self.default_schema = "default_schema.json"
-        self.schema_folder = test_bed_options.schema_folder
+        # Make sure that we have a list of schema_folders
+        self.schema_folder_list = test_bed_options.schema_folder \
+            if isinstance(test_bed_options.schema_folder, list) else \
+                list(test_bed_options.schema_folder)
         self.auto_register_schemas = test_bed_options.auto_register_schemas
         file_path = os.path.dirname(os.path.abspath(__file__))
         self.default_schema_path = os.path.join(file_path, self.default_schema)
 
     def start_process(self):
-        if self.schema_folder and self.auto_register_schemas:
+        if self.schema_folder_list and self.auto_register_schemas:
             self.is_schema_registry_available()
 
             if self.schema_available:
-                files = Helpers.find_files_in_dir(self.schema_folder)
+                # iterate list of schema folders
+                files = []
+                for folder in self.schema_folder_list:
+                    files += Helpers.find_files_in_dir(folder)
                 missing_key_files = Helpers.missing_key_files(files)
                 files_upload = files + missing_key_files
                 for schema_file in files_upload:
