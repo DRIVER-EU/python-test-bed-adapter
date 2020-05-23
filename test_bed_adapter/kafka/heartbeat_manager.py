@@ -1,6 +1,9 @@
 from .producer_manager import ProducerManager
 from ..utils.helpers import Helpers
+
 import datetime
+import urllib.request
+import socket
 import time
 
 
@@ -18,7 +21,17 @@ class HeartbeatManager:
         date = datetime.datetime.utcnow()
         date_ms = int(time.mktime(date.timetuple())) * 1000
 
-        message_json = {"id": self.client_id, "alive": date_ms}
+        # Get data for origin stringified json
+        hostName = str(socket.gethostname())
+        hostIP = str(socket.gethostbyname(hostName))
+        try:
+            externalIP = str(urllib.request.urlopen("http://ipv4bot.whatismyipaddress.com").read().decode("utf-8"))
+        except urllib.error.URLError as e:
+            externalIP = "unkown"
+
+        message_json = {"id": self.client_id, "alive": date_ms,
+                        "origin": "{hostname: %s, localIP: %s, externalIP: %s}" % (hostName, hostIP, externalIP)}
+
         messages = [{"message": message_json}]
         self.kafka_heartbeat_producer.send_messages(messages)
 
