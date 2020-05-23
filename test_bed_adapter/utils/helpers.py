@@ -31,7 +31,8 @@ class Helpers:
         files_schema = []
 
         for entry in scantree_recursive(directory_path):
-            if entry.is_file():
+            # Append only those .avsc files
+            if entry.is_file() and entry.path.endswith('.avsc'):
                 files_schema.append(entry.path)
         return files_schema
 
