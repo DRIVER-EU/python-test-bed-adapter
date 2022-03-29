@@ -13,6 +13,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/DRIVER-EU/python-test-bed-adapter",
     include_package_data=True,
+    data_files=[('default_schema', ['test_bed_adapter/registry/default_schema.json'])],
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",

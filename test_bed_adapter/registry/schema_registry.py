@@ -66,7 +66,7 @@ class SchemaRegistry(SchemaAccess):
 
         try:
             logging.info("Fetching schema using url:" + fetch_schema_url)
-            response = requests.get(fetch_schema_url, headers={'Accept': 'application/vnd.schemaregistry.v1+json'})
+            response = requests.get(fetch_schema_url)
             new_schema = {"version": version, "response_raw": response.json(), "schema_type": schema_type, "schema_topic_raw": topic, "topic": topic}
             new_schema = self.register_schema(new_schema)
             self.fetched_schemas.append(new_schema)
@@ -77,7 +77,7 @@ class SchemaRegistry(SchemaAccess):
         fetch_latest_versions_url = self.schema_url + '/subjects/' + topic + '/versions/latest'
         try:
             logging.info("Fetching latest schema versions using url:" + fetch_latest_versions_url)
-            response = requests.get(fetch_latest_versions_url, headers={'Accept': 'application/vnd.schemaregistry.v1+json'})
+            response = requests.get(fetch_latest_versions_url)
             result = {"version": response.json()["version"], "topic": topic}
             return result
         except:

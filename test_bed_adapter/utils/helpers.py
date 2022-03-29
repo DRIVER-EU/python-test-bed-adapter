@@ -5,15 +5,7 @@ import collections
 import os
 import pathlib
 import threading
-
-
-def scantree_recursive(path):
-    """Recursively yield DirEntry objects for given directory."""
-    for entry in os.scandir(path):
-        if entry.is_dir(follow_symlinks=False):
-            yield from scantree_recursive(entry.path)  # see below for Python 2.x
-        else:
-            yield entry
+import glob
 
 class Helpers:
     def __init__(self):
@@ -30,10 +22,7 @@ class Helpers:
 
         files_schema = []
 
-        for entry in scantree_recursive(directory_path):
-            # Append only those .avsc files
-            if entry.is_file() and entry.path.endswith('.avsc'):
-                files_schema.append(entry.path)
+        files_schema = glob.glob(directory + "/**/*.avsc", recursive=True)
         return files_schema
 
 
