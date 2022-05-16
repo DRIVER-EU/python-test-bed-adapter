@@ -71,7 +71,7 @@ class TimeService:
         """ Returns UTC date of trial time """
         # Return elapsed if not idle otherwise return date
         elapsed_ms = millisecond_since_date(self.localUpdatedSimTimeAt) * self.trialTimeSpeed
-        return datetime.fromtimestamp((self.trialTime + elapsed_ms) / 1000.0) if self.state is not "Idle" else datetime.now()
+        return datetime.fromtimestamp((self.trialTime + elapsed_ms) / 1000.0) if self.state != "Idle" else datetime.now()
 
     def get_trial_elapsed_time(self):
         """ Returns number of milliseconds elapsed since Unix Epoch """
