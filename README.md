@@ -1,5 +1,7 @@
 # python-test-bed-adapter
 
+DEPRECATED: PLEASE USE [THE NEW VERSION](https://github.com/OSINT-VDU-TNO/python-adapter)!
+
 This is the test-bed adapter for Python: it allows you to easily connect Python 
 services to the Apache Kafka test-bed via Python. Although it is specifically 
 created for connecting to our [test-bed](https://github.com/DRIVER-EU/test-bed), 
